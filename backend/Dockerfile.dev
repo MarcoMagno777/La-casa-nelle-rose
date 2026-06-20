@@ -1,0 +1,11 @@
+FROM php:8.3-cli-alpine
+RUN apk add --no-cache git unzip oniguruma-dev \
+    && docker-php-ext-install pdo pdo_mysql
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+WORKDIR /var/www/html
+COPY composer.json ./
+COPY composer.lock ./
+RUN composer install --prefer-dist --no-interaction
+COPY . .
+EXPOSE 8080
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]

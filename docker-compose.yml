@@ -1,0 +1,67 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/var/www/html
+      - backend_vendor:/var/www/html/vendor
+    environment:
+      APP_ENV: development
+      APP_URL: http://localhost:4200
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: antiquites
+      DB_USERNAME: antiquites
+      DB_PASSWORD: antiquites
+      JWT_SECRET: local-dev-secret-change-me
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: Admin123!
+      COMPANY_EMAIL: info@lacasanellerose.com
+      SMTP_HOST:
+      SMTP_PORT: 587
+      SMTP_USERNAME:
+      SMTP_PASSWORD:
+      SMTP_SECURE: tls
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: antiquites
+      MYSQL_USER: antiquites
+      MYSQL_PASSWORD: antiquites
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./config/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  frontend_node_modules:
+  backend_vendor:
+  mysql_data:

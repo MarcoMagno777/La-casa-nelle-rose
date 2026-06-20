@@ -1,0 +1,58 @@
+service: maison-des-roses
+image: your-registry.example.com/maison-des-roses
+
+servers:
+  web:
+    hosts:
+      - 203.0.113.10
+
+volumes:
+  - uploads:/var/www/html/public/uploads
+
+proxy:
+  ssl: true
+  host: antiquites.example.com
+  app_port: 80
+
+registry:
+  username: your-registry-user
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  clear:
+    APP_ENV: production
+    APP_URL: https://antiquites.example.com
+    DB_HOST: maison-des-roses-mysql
+    DB_PORT: 3306
+    DB_DATABASE: antiquites
+    DB_USERNAME: antiquites
+    COMPANY_EMAIL: info@lacasanellerose.com
+    SMTP_PORT: 587
+    SMTP_SECURE: tls
+    ADMIN_USERNAME: admin
+  secret:
+    - DB_PASSWORD
+    - JWT_SECRET
+    - ADMIN_PASSWORD
+    - SMTP_HOST
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
+
+builder:
+  arch: amd64
+
+accessories:
+  mysql:
+    image: mysql:8.4
+    host: 203.0.113.10
+    port: 127.0.0.1:3306:3306
+    env:
+      clear:
+        MYSQL_DATABASE: antiquites
+        MYSQL_USER: antiquites
+      secret:
+        - MYSQL_PASSWORD
+        - MYSQL_ROOT_PASSWORD
+    directories:
+      - data:/var/lib/mysql

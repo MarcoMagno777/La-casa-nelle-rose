@@ -1,0 +1,16 @@
+{
+  "name": "maison-des-roses/api",
+  "description": "Slim REST API for La Casa nelle Rose",
+  "type": "project",
+  "require": {
+    "php": "^8.1",
+    "slim/slim": "^4.14",
+    "slim/psr7": "^1.7",
+    "phpmailer/phpmailer": "^6.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
