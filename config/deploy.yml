@@ -26,15 +26,17 @@ env:
     DB_HOST: maison-des-roses-mysql
     DB_PORT: 3306
     DB_DATABASE: antiquites
-    DB_USERNAME: antiquites
+    DB_USERNAME: app_user
+    DB_ADMIN_USERNAME: admin_user
     COMPANY_EMAIL: info@lacasanellerose.com
     SMTP_PORT: 587
     SMTP_SECURE: tls
     ADMIN_USERNAME: admin
   secret:
     - DB_PASSWORD
+    - DB_ADMIN_PASSWORD
     - JWT_SECRET
-    - ADMIN_PASSWORD
+    - ADMIN_PASSWORD_HASH
     - SMTP_HOST
     - SMTP_USERNAME
     - SMTP_PASSWORD
@@ -50,9 +52,7 @@ accessories:
     env:
       clear:
         MYSQL_DATABASE: antiquites
-        MYSQL_USER: antiquites
       secret:
-        - MYSQL_PASSWORD
         - MYSQL_ROOT_PASSWORD
     directories:
       - data:/var/lib/mysql

@@ -43,7 +43,13 @@ export class AccountComponent implements OnInit {
   }
 
   removeFavorite(item: Furniture): void {
-    this.api.toggleFavorite(item.id).subscribe(() => this.loadFavorites());
+    this.api.toggleFavorite(item.id).subscribe({
+      next: () => this.loadFavorites(),
+      error: () => {
+        this.auth.logout();
+        this.router.navigateByUrl('/login');
+      }
+    });
   }
 
   logout(): void {

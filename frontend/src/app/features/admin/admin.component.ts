@@ -1,22 +1,27 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdminStats } from '../../core/admin.models';
 import { Furniture } from '../../core/models';
 import { AdminFurnitureFormComponent } from './admin-furniture-form.component';
 import { AdminFurnitureListComponent } from './admin-furniture-list.component';
-import { AdminLoginComponent } from './admin-login.component';
 import { emptyFurnitureForm, FurnitureForm } from './admin.models';
+import { AdminSearchComponent } from './admin-search.component';
 import { AdminService } from './admin.service';
 import { AdminStatsComponent } from './admin-stats.component';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [AdminLoginComponent, AdminStatsComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent],
+  imports: [AdminStatsComponent, AdminSearchComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent],
   template: `
     <main class="admin-page">
       @if (!admin.isLoggedIn()) {
-        <app-admin-login [error]="error()" (login)="login($event)" />
+        <section class="admin-login">
+          <p class="eyebrow">Amministrazione</p>
+          <h1>Accesso richiesto</h1>
+          <button type="button" class="primary" (click)="goToLogin()">Vai al login</button>
+        </section>
       } @else {
         <section class="admin-shell">
           <header class="admin-header">
@@ -35,16 +40,20 @@ import { AdminStatsComponent } from './admin-stats.component';
               [editingId]="editingId()"
               [error]="error()"
               [status]="status()"
+              [selectedFiles]="files"
               (filesSelected)="files = $event"
               (removeExistingImage)="removeExistingImage($event)"
               (save)="save()"
               (cancel)="resetForm()"
             />
-            <app-admin-furniture-list
-              [furniture]="furniture()"
-              (edit)="edit($event)"
-              (remove)="remove($event)"
-            />
+            <section class="admin-catalog-panel">
+              <app-admin-search [query]="searchQuery()" (queryChange)="searchQuery.set($event)" />
+              <app-admin-furniture-list
+                [furniture]="filteredFurniture()"
+                (edit)="edit($event)"
+                (remove)="remove($event)"
+              />
+            </section>
           </section>
         </section>
       }
@@ -53,8 +62,10 @@ import { AdminStatsComponent } from './admin-stats.component';
 })
 export class AdminComponent implements OnInit {
   readonly admin = inject(AdminService);
+  private readonly router = inject(Router);
   readonly stats = signal<AdminStats | null>(null);
   readonly furniture = signal<Furniture[]>([]);
+  readonly searchQuery = signal('');
   readonly editingId = signal<number | null>(null);
   readonly error = signal('');
   readonly status = signal('');
@@ -65,12 +76,8 @@ export class AdminComponent implements OnInit {
     if (this.admin.isLoggedIn()) this.load();
   }
 
-  login(credentials: { username: string; password: string }): void {
-    this.error.set('');
-    this.admin.login(credentials.username, credentials.password).subscribe({
-      next: () => this.load(),
-      error: () => this.error.set('Credenziali amministratore non valide.')
-    });
+  goToLogin(): void {
+    this.router.navigateByUrl('/login');
   }
 
   logout(): void {
@@ -82,6 +89,16 @@ export class AdminComponent implements OnInit {
   load(): void {
     this.admin.stats().subscribe((stats) => this.stats.set(stats));
     this.admin.furniture().subscribe((items) => this.furniture.set(items));
+  }
+
+  filteredFurniture(): Furniture[] {
+    const query = this.searchQuery().trim().toLowerCase();
+    if (!query) return this.furniture();
+
+    return this.furniture().filter((item) =>
+      [item.name, item.description, item.category, item.period, item.placement]
+        .some((value) => value.toLowerCase().includes(query))
+    );
   }
 
   edit(item: Furniture): void {

@@ -53,7 +53,11 @@ final class Auth
     public static function userIdFrom(Request $request): ?int
     {
         $payload = self::payloadFrom($request);
-        return ($payload['role'] ?? '') === 'user' ? (int) $payload['sub'] : null;
+        if (!$payload || ($payload['role'] ?? 'user') !== 'user' || !is_numeric($payload['sub'] ?? null)) {
+            return null;
+        }
+
+        return (int) $payload['sub'];
     }
 
     private static function payloadFrom(Request $request): ?array

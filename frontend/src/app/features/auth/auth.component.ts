@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { AdminService } from '../admin/admin.service';
 import { AuthFormComponent } from './auth-form.component';
 import { AuthMode, AuthSubmit } from './auth.models';
 import { AuthSwitchComponent } from './auth-switch.component';
@@ -42,6 +43,7 @@ import { AuthSwitchComponent } from './auth-switch.component';
 })
 export class AuthComponent implements OnInit {
   private readonly auth = inject(AuthService);
+  private readonly admin = inject(AdminService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   mode: AuthMode = 'login';
@@ -100,11 +102,22 @@ export class AuthComponent implements OnInit {
       return;
     }
 
-    const request = this.mode === 'login'
-      ? this.auth.login(form.identifier, form.password, form.remember)
-      : this.auth.register(form.username, form.identifier, form.password);
+    if (this.mode === 'login') {
+      this.admin.login(form.identifier, form.password).subscribe({
+        next: () => this.router.navigateByUrl('/login/admin-panel'),
+        error: () => this.loginUser(form)
+      });
+      return;
+    }
 
-    request.subscribe({
+    this.auth.register(form.username, form.identifier, form.password).subscribe({
+      next: () => this.router.navigateByUrl('/area-personale'),
+      error: () => this.error = 'Credenziali non valide o dati gia registrati.'
+    });
+  }
+
+  private loginUser(form: AuthSubmit): void {
+    this.auth.login(form.identifier, form.password, form.remember).subscribe({
       next: () => this.router.navigateByUrl('/area-personale'),
       error: () => this.error = 'Credenziali non valide o dati gia registrati.'
     });

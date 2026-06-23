@@ -17,7 +17,7 @@ export class VisitService {
   }
 
   private track(path: string): void {
-    if (path === this.lastTrackedPath || path.startsWith('/admin')) return;
+    if (path === this.lastTrackedPath || path.startsWith('/login/admin-panel')) return;
     this.lastTrackedPath = path;
     this.api.recordVisit(path).subscribe({ error: () => undefined });
   }

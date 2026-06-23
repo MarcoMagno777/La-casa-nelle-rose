@@ -28,11 +28,13 @@ services:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_DATABASE: antiquites
-      DB_USERNAME: antiquites
-      DB_PASSWORD: antiquites
+      DB_USERNAME: app_user
+      DB_PASSWORD: app_password
+      DB_ADMIN_USERNAME: admin_user
+      DB_ADMIN_PASSWORD: admin_password
       JWT_SECRET: local-dev-secret-change-me
       ADMIN_USERNAME: admin
-      ADMIN_PASSWORD: Admin123!
+      ADMIN_PASSWORD_HASH: "$$2y$$10$$78u.lpYeOywm59Ak8sfTn.kdOGVsB0/yzNFO22br3ZlOro42bEnaG"
       COMPANY_EMAIL: info@lacasanellerose.com
       SMTP_HOST:
       SMTP_PORT: 587
@@ -49,8 +51,6 @@ services:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: antiquites
-      MYSQL_USER: antiquites
-      MYSQL_PASSWORD: antiquites
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql

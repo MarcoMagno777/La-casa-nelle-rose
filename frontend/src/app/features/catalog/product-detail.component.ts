@@ -7,11 +7,6 @@ import { Furniture } from '../../core/models';
   template: `
     <section class="product-detail" aria-label="Scheda mobile">
       <button type="button" class="detail-close" (click)="closed.emit()">Torna al catalogo</button>
-      <div class="detail-gallery">
-        @for (image of item.images; track image) {
-          <img [src]="image" [alt]="item.name">
-        }
-      </div>
       <article class="detail-copy">
         <p class="eyebrow">{{ item.period }} · {{ item.category }}</p>
         <h2>{{ item.name }}</h2>
@@ -30,6 +25,11 @@ import { Furniture } from '../../core/models';
           {{ item.liked ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti' }}
         </button>
       </article>
+      <div class="detail-gallery">
+        @for (image of item.images; track image) {
+          <img [src]="image" [alt]="item.name">
+        }
+      </div>
     </section>
   `
 })

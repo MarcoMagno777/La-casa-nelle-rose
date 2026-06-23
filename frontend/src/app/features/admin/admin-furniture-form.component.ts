@@ -33,9 +33,25 @@ import { FurnitureForm } from './admin.models';
           }
         </div>
       }
-      <label>Foto dal computer
-        <input name="images" type="file" accept="image/png,image/jpeg,image/webp" multiple (change)="selectFiles($event)">
-      </label>
+      <div
+        class="file-dropzone"
+        [class.dragging]="isDragging"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <label>Foto dal computer
+          <input name="images" type="file" accept="image/png,image/jpeg,image/webp" multiple (change)="selectFiles($event)">
+        </label>
+        <p>Trascina qui una o più foto oppure selezionale dal computer.</p>
+        @if (selectedFiles.length) {
+          <ul>
+            @for (file of selectedFiles; track file.name) {
+              <li>{{ file.name }}</li>
+            }
+          </ul>
+        }
+      </div>
       @if (error) {
         <p class="form-error">{{ error }}</p>
       }
@@ -56,6 +72,7 @@ export class AdminFurnitureFormComponent {
   @Input() editingId: number | null = null;
   @Input() error = '';
   @Input() status = '';
+  @Input() selectedFiles: File[] = [];
   @Output() filesSelected = new EventEmitter<File[]>();
   @Output() removeExistingImage = new EventEmitter<string>();
   @Output() save = new EventEmitter<void>();
@@ -63,6 +80,29 @@ export class AdminFurnitureFormComponent {
 
   selectFiles(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.filesSelected.emit(Array.from(input.files ?? []));
+    this.emitFiles(input.files);
+  }
+
+  isDragging = false;
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = false;
+    this.emitFiles(event.dataTransfer?.files ?? null);
+  }
+
+  private emitFiles(files: FileList | null): void {
+    const images = Array.from(files ?? []).filter((file) => file.type.startsWith('image/'));
+    this.filesSelected.emit(images);
   }
 }

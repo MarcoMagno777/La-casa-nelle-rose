@@ -9,7 +9,7 @@ export const routes: Routes = [
   { path: '', component: CatalogComponent },
   { path: 'catalogo', component: CatalogComponent },
   { path: 'login', component: AuthComponent },
+  { path: 'login/admin-panel', component: AdminComponent },
   { path: 'area-personale', component: AccountComponent, canActivate: [authGuard] },
-  { path: 'admin', component: AdminComponent },
   { path: '**', redirectTo: '' }
 ];

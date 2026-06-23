@@ -8,8 +8,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   template: `
     <header class="site-header">
       <a class="brand" routerLink="/">
-        <span>La Casa nelle Rose</span>
-        <small>Arredamento provenzale</small>
+        <img src="/assets/la-casa-nelle-rose-logo.jpg" alt="" aria-hidden="true">
+        <span>
+          <strong>La Casa nelle Rose</strong>
+          <small>Arredamento provenzale</small>
+        </span>
       </a>
       <nav aria-label="Navigazione principale">
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>

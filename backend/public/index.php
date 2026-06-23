@@ -140,9 +140,9 @@ $app->post('/api/admin/login', function (Request $request, Response $response) u
     $username = trim((string) ($data['username'] ?? ''));
     $password = (string) ($data['password'] ?? '');
     $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
-    $adminPassword = getenv('ADMIN_PASSWORD') ?: 'Admin123!';
+    $adminPasswordHash = getenv('ADMIN_PASSWORD_HASH') ?: '$2y$10$78u.lpYeOywm59Ak8sfTn.kdOGVsB0/yzNFO22br3ZlOro42bEnaG';
 
-    if (!hash_equals($adminUsername, $username) || !hash_equals($adminPassword, $password)) {
+    if (!hash_equals($adminUsername, $username) || !password_verify($password, $adminPasswordHash)) {
         return $json($response, ['error' => 'Invalid credentials'], 401);
     }
 
@@ -153,10 +153,16 @@ $app->get('/api/admin/stats', function (Request $request, Response $response) us
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
 
-    $db = Database::connection();
-    $total = (int) $db->query('SELECT COUNT(*) FROM site_visits')->fetchColumn();
-    $today = (int) $db->query('SELECT COUNT(*) FROM site_visits WHERE DATE(created_at) = CURRENT_DATE')->fetchColumn();
-    $furniture = (int) $db->query('SELECT COUNT(*) FROM furniture')->fetchColumn();
+    $db = Database::adminConnection();
+    $totalStatement = $db->prepare('SELECT COUNT(*) FROM site_visits');
+    $totalStatement->execute();
+    $total = (int) $totalStatement->fetchColumn();
+    $todayStatement = $db->prepare('SELECT COUNT(*) FROM site_visits WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL 1 DAY');
+    $todayStatement->execute();
+    $today = (int) $todayStatement->fetchColumn();
+    $furnitureStatement = $db->prepare('SELECT COUNT(*) FROM furniture');
+    $furnitureStatement->execute();
+    $furniture = (int) $furnitureStatement->fetchColumn();
 
     return $json($response, ['totalVisits' => $total, 'todayVisits' => $today, 'furnitureCount' => $furniture]);
 });
@@ -165,7 +171,8 @@ $app->get('/api/admin/furniture', function (Request $request, Response $response
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
 
-    $statement = Database::connection()->query('SELECT * FROM furniture ORDER BY created_at DESC');
+    $statement = Database::adminConnection()->prepare('SELECT * FROM furniture ORDER BY created_at DESC');
+    $statement->execute();
     return $json($response, array_map($normalizeFurniture, $statement->fetchAll()));
 });
 
@@ -179,7 +186,7 @@ $app->post('/api/admin/furniture', function (Request $request, Response $respons
         return $json($response, ['error' => 'Invalid data'], 422);
     }
 
-    $db = Database::connection();
+    $db = Database::adminConnection();
     $statement = $db->prepare(
         'INSERT INTO furniture (name, description, placement, category, period, images)
          VALUES (:name, :description, :placement, :category, :period, :images)'
@@ -193,7 +200,7 @@ $app->post('/api/admin/furniture/{id}', function (Request $request, Response $re
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
 
-    $db = Database::connection();
+    $db = Database::adminConnection();
     $id = (int) $args['id'];
     $current = $db->prepare('SELECT images FROM furniture WHERE id = :id');
     $current->execute(['id' => $id]);
@@ -226,7 +233,7 @@ $app->delete('/api/admin/furniture/{id}', function (Request $request, Response $
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
 
-    Database::connection()->prepare('DELETE FROM furniture WHERE id = :id')->execute(['id' => (int) $args['id']]);
+    Database::adminConnection()->prepare('DELETE FROM furniture WHERE id = :id')->execute(['id' => (int) $args['id']]);
     return $json($response, ['status' => 'deleted']);
 });
 
@@ -433,7 +440,7 @@ $app->post('/api/me/favorites/{id}', function (Request $request, Response $respo
 
     $db = Database::connection();
     $furnitureId = (int) $args['id'];
-    $statement = $db->prepare('SELECT id FROM favorites WHERE user_id = :user_id AND furniture_id = :furniture_id');
+    $statement = $db->prepare('SELECT 1 FROM favorites WHERE user_id = :user_id AND furniture_id = :furniture_id');
     $statement->execute(['user_id' => $userId, 'furniture_id' => $furnitureId]);
 
     if ($statement->fetch()) {

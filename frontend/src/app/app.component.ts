@@ -30,6 +30,6 @@ export class AppComponent implements OnInit {
   }
 
   isAdminPage(): boolean {
-    return this.router.url.startsWith('/admin');
+    return this.router.url.startsWith('/login/admin-panel');
   }
 }
