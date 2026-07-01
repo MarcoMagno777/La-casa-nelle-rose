@@ -6,13 +6,14 @@ import { Furniture } from '../../core/models';
 import { CatalogGridComponent } from './catalog-grid.component';
 import { CatalogHeroComponent } from './catalog-hero.component';
 import { CatalogToolbarComponent } from './catalog-toolbar.component';
+import { HomeCategoriesComponent } from './home-categories.component';
 import { HomeSearchComponent } from './home-search.component';
 import { ProductDetailComponent } from './product-detail.component';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeSearchComponent, ProductDetailComponent],
+  imports: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeCategoriesComponent, HomeSearchComponent, ProductDetailComponent],
   template: `
     <main>
       <app-catalog-hero [isCatalogPage]="isCatalogPage()" [heroProducts]="heroProducts()" />
@@ -30,6 +31,7 @@ import { ProductDetailComponent } from './product-detail.component';
           />
         } @else {
           <app-home-search [query]="query" (queryChange)="changeQuery($event)" />
+          <app-home-categories [categories]="categoryPreviews()" (selected)="selectHomeCategory($event)" />
         }
         @if (shouldShowProducts()) {
           <app-catalog-grid [furniture]="furniture()" (liked)="toggleLike($event)" (selected)="openProduct($event)" />
@@ -46,6 +48,7 @@ export class CatalogComponent implements OnInit {
   readonly heroProducts = signal<Furniture[]>([]);
   readonly selectedFurniture = signal<Furniture | null>(null);
   readonly categories = signal<string[]>([]);
+  readonly categoryPreviews = signal<Array<{ category: string; image: string; count: number }>>([]);
   query = '';
   category = '';
 
@@ -62,6 +65,7 @@ export class CatalogComponent implements OnInit {
   loadCategories(): void {
     this.api.getFurniture().subscribe((items) => {
       this.categories.set([...new Set(items.map((item) => item.category))].sort());
+      this.categoryPreviews.set(this.toCategoryPreviews(items));
     });
   }
 
@@ -93,6 +97,13 @@ export class CatalogComponent implements OnInit {
   changeCategory(category: string): void {
     this.category = category;
     this.load();
+  }
+
+  selectHomeCategory(category: string): void {
+    this.category = category;
+    this.query = '';
+    this.load();
+    setTimeout(() => document.querySelector('.catalog-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   }
 
   toggleLike(item: Furniture): void {
@@ -130,6 +141,21 @@ export class CatalogComponent implements OnInit {
   }
 
   shouldShowProducts(): boolean {
-    return this.isCatalogPage() || this.query.trim() !== '';
+    return this.isCatalogPage() || this.query.trim() !== '' || this.category !== '';
+  }
+
+  private toCategoryPreviews(items: Furniture[]): Array<{ category: string; image: string; count: number }> {
+    const groups = new Map<string, Furniture[]>();
+    for (const item of items) {
+      groups.set(item.category, [...(groups.get(item.category) ?? []), item]);
+    }
+
+    return Array.from(groups.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([category, group]) => ({
+        category,
+        count: group.length,
+        image: group.find((item) => item.images.length > 0)?.images[0] ?? '',
+      }));
   }
 }

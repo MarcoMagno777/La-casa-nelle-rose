@@ -80,27 +80,42 @@ $furniturePayload = static function (Request $request): array {
     ];
 };
 
+$isValidPassword = static function (string $password): bool {
+    $length = strlen($password);
+    return $length >= 8
+        && $length <= 20
+        && preg_match('/[0-9]/', $password)
+        && preg_match('/[^A-Za-z0-9]/', $password);
+};
+
 $sendPasswordResetEmail = static function (string $email, string $resetLink): bool {
-    if (!getenv('SMTP_HOST')) {
+    if (!getenv('SMTP_HOST') || !getenv('SMTP_USERNAME') || !getenv('SMTP_PASSWORD')) {
         return false;
     }
 
-    $companyEmail = getenv('COMPANY_EMAIL') ?: 'info@lacasanellerose.com';
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = getenv('SMTP_HOST');
-    $mail->Port = (int) (getenv('SMTP_PORT') ?: 587);
-    $mail->SMTPAuth = true;
-    $mail->Username = getenv('SMTP_USERNAME');
-    $mail->Password = getenv('SMTP_PASSWORD');
-    if ((getenv('SMTP_SECURE') ?: 'tls') !== '') {
-        $mail->SMTPSecure = getenv('SMTP_SECURE') ?: 'tls';
+    try {
+        $smtpUsername = getenv('SMTP_USERNAME');
+        $companyEmail = getenv('COMPANY_EMAIL') ?: $smtpUsername;
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = getenv('SMTP_HOST');
+        $mail->Port = (int) (getenv('SMTP_PORT') ?: 587);
+        $mail->SMTPAuth = true;
+        $mail->Username = $smtpUsername;
+        $mail->Password = getenv('SMTP_PASSWORD');
+        if ((getenv('SMTP_SECURE') ?: 'tls') !== '') {
+            $mail->SMTPSecure = getenv('SMTP_SECURE') ?: 'tls';
+        }
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom($companyEmail, 'La Casa nelle Rose');
+        $mail->addAddress($email);
+        $mail->Subject = 'Reimposta la password';
+        $mail->Body = "Abbiamo ricevuto una richiesta di reset password.\n\nApri questo link entro 60 minuti:\n{$resetLink}\n\nSe non hai richiesto tu il reset, ignora questa email.";
+        $mail->send();
+    } catch (Throwable $exception) {
+        error_log('Password reset email failed: ' . $exception->getMessage());
+        return false;
     }
-    $mail->setFrom($companyEmail, 'La Casa nelle Rose');
-    $mail->addAddress($email);
-    $mail->Subject = 'Reimposta la password';
-    $mail->Body = "Abbiamo ricevuto una richiesta di reset password.\n\nApri questo link entro 60 minuti:\n{$resetLink}\n\nSe non hai richiesto tu il reset, ignora questa email.";
-    $mail->send();
 
     return true;
 };
@@ -266,15 +281,15 @@ $app->get('/api/furniture', function (Request $request, Response $response) use 
     return $json($response, $items);
 });
 
-$app->post('/api/auth/register', function (Request $request, Response $response) use ($json) {
+$app->post('/api/auth/register', function (Request $request, Response $response) use ($json, $isValidPassword) {
     $db = Database::connection();
     $data = (array) $request->getParsedBody();
     $username = trim((string) ($data['username'] ?? ''));
     $email = filter_var((string) ($data['email'] ?? ''), FILTER_VALIDATE_EMAIL);
     $password = (string) ($data['password'] ?? '');
 
-    if ($username === '' || !$email || strlen($password) < 8) {
-        return $json($response, ['error' => 'Invalid data'], 422);
+    if ($username === '' || !$email || !$isValidPassword($password)) {
+        return $json($response, ['error' => 'Invalid credentials'], 422);
     }
 
     try {
@@ -285,7 +300,7 @@ $app->post('/api/auth/register', function (Request $request, Response $response)
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
         ]);
     } catch (Throwable) {
-        return $json($response, ['error' => 'User already exists'], 409);
+        return $json($response, ['error' => 'Invalid credentials'], 409);
     }
 
     $user = ['id' => (int) $db->lastInsertId(), 'username' => $username, 'email' => $email];
@@ -347,21 +362,21 @@ $app->post('/api/auth/password-reset/request', function (Request $request, Respo
     $sent = $sendPasswordResetEmail($email, $resetLink);
 
     $payload = ['status' => 'sent'];
-    if (!$sent && (getenv('APP_ENV') ?: 'production') !== 'production') {
-        $payload['resetLink'] = $resetLink;
+    if (!$sent) {
+        return $json($response, ['error' => 'Email service not configured'], 503);
     }
 
     return $json($response, $payload);
 });
 
-$app->post('/api/auth/password-reset/confirm', function (Request $request, Response $response) use ($json) {
+$app->post('/api/auth/password-reset/confirm', function (Request $request, Response $response) use ($json, $isValidPassword) {
     $db = Database::connection();
     $data = (array) $request->getParsedBody();
     $email = filter_var((string) ($data['email'] ?? ''), FILTER_VALIDATE_EMAIL);
     $token = (string) ($data['token'] ?? '');
     $password = (string) ($data['password'] ?? '');
 
-    if (!$email || $token === '' || strlen($password) < 8) {
+    if (!$email || $token === '' || !$isValidPassword($password)) {
         return $json($response, ['error' => 'Invalid data'], 422);
     }
 
@@ -476,8 +491,14 @@ $app->post('/api/inquiries', function (Request $request, Response $response) use
         'message' => $message,
     ]);
 
-    $companyEmail = getenv('COMPANY_EMAIL') ?: 'info@lacasanellerose.com';
-    if (getenv('SMTP_HOST')) {
+    $userStatement = $db->prepare('SELECT username, email FROM users WHERE id = :id LIMIT 1');
+    $userStatement->execute(['id' => $userId]);
+    $user = $userStatement->fetch() ?: [];
+    $userEmail = filter_var((string) ($user['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+    $userName = trim((string) ($user['username'] ?? 'Cliente'));
+
+    $companyEmail = getenv('COMPANY_EMAIL') ?: 'marcomagno007@gmail.com';
+    if ($userEmail && getenv('SMTP_HOST') && getenv('SMTP_USERNAME') && getenv('SMTP_PASSWORD')) {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = getenv('SMTP_HOST');
@@ -485,10 +506,15 @@ $app->post('/api/inquiries', function (Request $request, Response $response) use
         $mail->SMTPAuth = true;
         $mail->Username = getenv('SMTP_USERNAME');
         $mail->Password = getenv('SMTP_PASSWORD');
-        $mail->setFrom($companyEmail, 'La Casa nelle Rose');
+        if ((getenv('SMTP_SECURE') ?: 'tls') !== '') {
+            $mail->SMTPSecure = getenv('SMTP_SECURE') ?: 'tls';
+        }
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom($userEmail, $userName);
+        $mail->addReplyTo($userEmail, $userName);
         $mail->addAddress($companyEmail);
         $mail->Subject = $subject;
-        $mail->Body = $message;
+        $mail->Body = "Messaggio da {$userName} <{$userEmail}>:\n\n{$message}";
         $mail->send();
     }
 

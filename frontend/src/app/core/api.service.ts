@@ -36,8 +36,8 @@ export class ApiService {
     return this.http.post<AuthResponse>(`${this.baseUrl}/auth/register`, { username, email, password });
   }
 
-  requestPasswordReset(email: string): Observable<{ status: string; resetLink?: string }> {
-    return this.http.post<{ status: string; resetLink?: string }>(`${this.baseUrl}/auth/password-reset/request`, { email });
+  requestPasswordReset(email: string): Observable<{ status: string }> {
+    return this.http.post<{ status: string }>(`${this.baseUrl}/auth/password-reset/request`, { email });
   }
 
   confirmPasswordReset(email: string, token: string, password: string): Observable<{ status: string }> {

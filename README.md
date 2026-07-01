@@ -29,15 +29,16 @@ Servizi:
 
 ## Reset password
 
-Il reset password usa token monouso con scadenza a 60 minuti. In produzione configura:
+Il reset password usa token monouso con scadenza a 60 minuti e invia una mail all'utente. Configura:
 
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USERNAME`
-- `SMTP_PASSWORD`
-- `SMTP_SECURE`
+- `COMPANY_EMAIL=marcomagno007@gmail.com`
+- `SMTP_HOST=smtp.gmail.com`
+- `SMTP_PORT=587`
+- `SMTP_USERNAME=marcomagno007@gmail.com`
+- `SMTP_PASSWORD` con una password per app Gmail
+- `SMTP_SECURE=tls`
 
-In sviluppo, se SMTP non e configurato, l'API restituisce il link di reset nella risposta per facilitare il test locale.
+Se SMTP non e configurato, la richiesta di reset restituisce errore e non espone link di reset nella risposta.
 
 ## Deploy con Kamal
 

@@ -17,6 +17,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
+    env_file:
+      - ./.kamal/secrets
     ports:
       - "8080:8080"
     volumes:
@@ -35,11 +37,10 @@ services:
       JWT_SECRET: local-dev-secret-change-me
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD_HASH: "$$2y$$10$$78u.lpYeOywm59Ak8sfTn.kdOGVsB0/yzNFO22br3ZlOro42bEnaG"
-      COMPANY_EMAIL: info@lacasanellerose.com
-      SMTP_HOST:
+      COMPANY_EMAIL: marcomagno007@gmail.com
+      SMTP_HOST: smtp.gmail.com
       SMTP_PORT: 587
-      SMTP_USERNAME:
-      SMTP_PASSWORD:
+      SMTP_USERNAME: marcomagno007@gmail.com
       SMTP_SECURE: tls
     depends_on:
       mysql:

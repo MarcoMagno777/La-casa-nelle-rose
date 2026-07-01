@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -19,6 +19,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <a routerLink="/catalogo" routerLinkActive="active">Catalogo</a>
         @if (isLoggedIn) {
           <a routerLink="/area-personale" routerLinkActive="active">Area personale</a>
+          <button type="button" class="link-button" (click)="logout.emit()">Esci</button>
         } @else {
           <a routerLink="/login" routerLinkActive="active">Login</a>
         }
@@ -28,4 +29,5 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class SiteHeaderComponent {
   @Input() isLoggedIn = false;
+  @Output() logout = new EventEmitter<void>();
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-account-header',
@@ -9,11 +9,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         <p class="eyebrow">Bonjour {{ username }}</p>
         <h1>I tuoi preferiti</h1>
       </div>
-      <button type="button" class="secondary" (click)="logout.emit()">Esci</button>
     </section>
   `
 })
 export class AccountHeaderComponent {
   @Input() username = '';
-  @Output() logout = new EventEmitter<void>();
 }

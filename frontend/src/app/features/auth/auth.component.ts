@@ -79,12 +79,10 @@ export class AuthComponent implements OnInit {
 
     if (this.mode === 'resetRequest') {
       this.auth.requestPasswordReset(form.identifier).subscribe({
-        next: (response) => {
-          this.status = response.resetLink
-            ? `Link generato per sviluppo: ${response.resetLink}`
-            : 'Se l’email esiste, riceverai un link per reimpostare la password.';
+        next: () => {
+          this.status = 'Se l’email esiste, riceverai un link per reimpostare la password.';
         },
-        error: () => this.error = 'Inserisci un indirizzo email valido.'
+        error: () => this.error = 'Non e stato possibile inviare la mail di reset.'
       });
       return;
     }
@@ -112,14 +110,14 @@ export class AuthComponent implements OnInit {
 
     this.auth.register(form.username, form.identifier, form.password).subscribe({
       next: () => this.router.navigateByUrl('/area-personale'),
-      error: () => this.error = 'Credenziali non valide o dati gia registrati.'
+      error: () => this.error = 'Credenziali non valide.'
     });
   }
 
   private loginUser(form: AuthSubmit): void {
     this.auth.login(form.identifier, form.password, form.remember).subscribe({
       next: () => this.router.navigateByUrl('/area-personale'),
-      error: () => this.error = 'Credenziali non valide o dati gia registrati.'
+      error: () => this.error = 'Credenziali non valide.'
     });
   }
 }

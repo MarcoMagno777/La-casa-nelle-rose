@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
         <p>Tel. +39 055 444112</p>
       </div>
       <div class="footer-links" aria-label="Contatti e social">
-        <a href="mailto:info@lacasanellerose.com">info&#64;lacasanellerose.com</a>
+        <a href="mailto:marcomagno007@gmail.com">marcomagno007&#64;gmail.com</a>
         <a href="http://www.facebook.com/lacasanellerose" target="_blank" rel="noreferrer">Facebook</a>
         <a href="https://www.instagram.com/lacasanellerose/" target="_blank" rel="noreferrer">Instagram</a>
         <span>P.IVA 04857380481</span>

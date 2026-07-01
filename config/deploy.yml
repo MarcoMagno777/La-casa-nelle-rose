@@ -28,7 +28,9 @@ env:
     DB_DATABASE: antiquites
     DB_USERNAME: app_user
     DB_ADMIN_USERNAME: admin_user
-    COMPANY_EMAIL: info@lacasanellerose.com
+    COMPANY_EMAIL: marcomagno007@gmail.com
+    SMTP_HOST: smtp.gmail.com
+    SMTP_USERNAME: marcomagno007@gmail.com
     SMTP_PORT: 587
     SMTP_SECURE: tls
     ADMIN_USERNAME: admin
@@ -37,8 +39,6 @@ env:
     - DB_ADMIN_PASSWORD
     - JWT_SECRET
     - ADMIN_PASSWORD_HASH
-    - SMTP_HOST
-    - SMTP_USERNAME
     - SMTP_PASSWORD
 
 builder:

@@ -20,7 +20,7 @@ import { InquiryFormComponent } from './inquiry-form.component';
           <a class="primary" routerLink="/login">Vai al login</a>
         </section>
       } @else {
-        <app-account-header [username]="auth.user()?.username ?? ''" (logout)="logout()" />
+        <app-account-header [username]="auth.user()?.username ?? ''" />
         <app-favorites-section [favorites]="favorites()" (remove)="removeFavorite($event)" />
         <app-inquiry-form [status]="status" (sent)="send($event)" />
       }
@@ -50,11 +50,6 @@ export class AccountComponent implements OnInit {
         this.router.navigateByUrl('/login');
       }
     });
-  }
-
-  logout(): void {
-    this.auth.logout();
-    this.router.navigateByUrl('/');
   }
 
   send(request: { subject: string; message: string }): void {

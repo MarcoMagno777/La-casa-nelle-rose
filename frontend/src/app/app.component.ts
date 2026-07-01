@@ -11,7 +11,7 @@ import { SiteHeaderComponent } from './shared/site-header.component';
   imports: [RouterOutlet, SiteHeaderComponent, SiteFooterComponent],
   template: `
     @if (!isAdminPage()) {
-      <app-site-header [isLoggedIn]="auth.isLoggedIn()" />
+      <app-site-header [isLoggedIn]="auth.isLoggedIn()" (logout)="logout()" />
     }
     <router-outlet />
     @if (!isAdminPage()) {
@@ -31,5 +31,10 @@ export class AppComponent implements OnInit {
 
   isAdminPage(): boolean {
     return this.router.url.startsWith('/login/admin-panel');
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigateByUrl('/');
   }
 }

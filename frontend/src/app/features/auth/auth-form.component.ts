@@ -24,9 +24,21 @@ import { AuthMode, AuthSubmit } from './auth.models';
       @if (mode !== 'resetRequest') {
         <label>{{ mode === 'resetConfirm' ? 'Nuova password' : 'Password' }}
           <span class="password-field">
-            <input name="password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" required minlength="8">
+            <input
+              name="password"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              required
+              minlength="8"
+              maxlength="20"
+              pattern="^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,20}$"
+              autocomplete="current-password"
+            >
             <button type="button" (click)="showPassword = !showPassword">{{ showPassword ? 'Nascondi' : 'Mostra' }}</button>
           </span>
+          @if (mode === 'register' || mode === 'resetConfirm') {
+            <span class="password-rules">Password: minimo 8 e massimo 20 caratteri, almeno un numero e un carattere speciale.</span>
+          }
         </label>
       }
       @if (mode === 'login') {

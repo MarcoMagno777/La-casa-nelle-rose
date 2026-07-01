@@ -35834,7 +35834,7 @@ var SiteFooterComponent = class _SiteFooterComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SiteFooterComponent, selectors: [["app-site-footer"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 17, vars: 0, consts: [[1, "site-footer"], [1, "footer-brand"], ["aria-label", "Contatti e social", 1, "footer-links"], ["href", "mailto:info@lacasanellerose.com"], ["href", "http://www.facebook.com/lacasanellerose", "target", "_blank", "rel", "noreferrer"], ["href", "https://www.instagram.com/lacasanellerose/", "target", "_blank", "rel", "noreferrer"]], template: function SiteFooterComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SiteFooterComponent, selectors: [["app-site-footer"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 17, vars: 0, consts: [[1, "site-footer"], [1, "footer-brand"], ["aria-label", "Contatti e social", 1, "footer-links"], ["href", "mailto:marcomagno007@gmail.com"], ["href", "http://www.facebook.com/lacasanellerose", "target", "_blank", "rel", "noreferrer"], ["href", "https://www.instagram.com/lacasanellerose/", "target", "_blank", "rel", "noreferrer"]], template: function SiteFooterComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "footer", 0)(1, "div")(2, "p", 1);
         \u0275\u0275text(3, "La Casa nelle Rose");
@@ -35846,7 +35846,7 @@ var SiteFooterComponent = class _SiteFooterComponent {
         \u0275\u0275text(7, "Tel. +39 055 444112");
         \u0275\u0275elementEnd()();
         \u0275\u0275elementStart(8, "div", 2)(9, "a", 3);
-        \u0275\u0275text(10, "info@lacasanellerose.com");
+        \u0275\u0275text(10, "marcomagno007@gmail.com");
         \u0275\u0275elementEnd();
         \u0275\u0275elementStart(11, "a", 4);
         \u0275\u0275text(12, "Facebook");
@@ -35869,14 +35869,23 @@ var SiteFooterComponent = class _SiteFooterComponent {
 var _c0 = () => ({ exact: true });
 function SiteHeaderComponent_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 6);
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "a", 7);
     \u0275\u0275text(1, "Area personale");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "button", 8);
+    \u0275\u0275listener("click", function SiteHeaderComponent_Conditional_13_Template_button_click_2_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.logout.emit());
+    });
+    \u0275\u0275text(3, "Esci");
     \u0275\u0275elementEnd();
   }
 }
 function SiteHeaderComponent_Conditional_14_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 7);
+    \u0275\u0275elementStart(0, "a", 6);
     \u0275\u0275text(1, "Login");
     \u0275\u0275elementEnd();
   }
@@ -35884,6 +35893,7 @@ function SiteHeaderComponent_Conditional_14_Template(rf, ctx) {
 var SiteHeaderComponent = class _SiteHeaderComponent {
   constructor() {
     this.isLoggedIn = false;
+    this.logout = new EventEmitter();
   }
   static {
     this.\u0275fac = function SiteHeaderComponent_Factory(__ngFactoryType__) {
@@ -35891,7 +35901,7 @@ var SiteHeaderComponent = class _SiteHeaderComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SiteHeaderComponent, selectors: [["app-site-header"]], inputs: { isLoggedIn: "isLoggedIn" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 15, vars: 3, consts: [[1, "site-header"], ["routerLink", "/", 1, "brand"], ["src", "/assets/la-casa-nelle-rose-logo.jpg", "alt", "", "aria-hidden", "true"], ["aria-label", "Navigazione principale"], ["routerLink", "/", "routerLinkActive", "active", 3, "routerLinkActiveOptions"], ["routerLink", "/catalogo", "routerLinkActive", "active"], ["routerLink", "/area-personale", "routerLinkActive", "active"], ["routerLink", "/login", "routerLinkActive", "active"]], template: function SiteHeaderComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SiteHeaderComponent, selectors: [["app-site-header"]], inputs: { isLoggedIn: "isLoggedIn" }, outputs: { logout: "logout" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 15, vars: 3, consts: [[1, "site-header"], ["routerLink", "/", 1, "brand"], ["src", "/assets/la-casa-nelle-rose-logo.jpg", "alt", "", "aria-hidden", "true"], ["aria-label", "Navigazione principale"], ["routerLink", "/", "routerLinkActive", "active", 3, "routerLinkActiveOptions"], ["routerLink", "/catalogo", "routerLinkActive", "active"], ["routerLink", "/login", "routerLinkActive", "active"], ["routerLink", "/area-personale", "routerLinkActive", "active"], ["type", "button", 1, "link-button", 3, "click"]], template: function SiteHeaderComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "header", 0)(1, "a", 1);
         \u0275\u0275element(2, "img", 2);
@@ -35907,7 +35917,7 @@ var SiteHeaderComponent = class _SiteHeaderComponent {
         \u0275\u0275elementStart(11, "a", 5);
         \u0275\u0275text(12, "Catalogo");
         \u0275\u0275elementEnd();
-        \u0275\u0275template(13, SiteHeaderComponent_Conditional_13_Template, 2, 0, "a", 6)(14, SiteHeaderComponent_Conditional_14_Template, 2, 0, "a", 7);
+        \u0275\u0275template(13, SiteHeaderComponent_Conditional_13_Template, 4, 0)(14, SiteHeaderComponent_Conditional_14_Template, 2, 0, "a", 6);
         \u0275\u0275elementEnd()();
       }
       if (rf & 2) {
@@ -35920,17 +35930,24 @@ var SiteHeaderComponent = class _SiteHeaderComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SiteHeaderComponent, { className: "SiteHeaderComponent", filePath: "src/app/shared/site-header.component.ts", lineNumber: 29 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SiteHeaderComponent, { className: "SiteHeaderComponent", filePath: "src/app/shared/site-header.component.ts", lineNumber: 30 });
 })();
 
 // src/app/app.component.ts
 function AppComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-site-header", 0);
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "app-site-header", 1);
+    \u0275\u0275listener("logout", function AppComponent_Conditional_0_Template_app_site_header_logout_0_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.logout());
+    });
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("isLoggedIn", ctx_r0.auth.isLoggedIn());
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275property("isLoggedIn", ctx_r1.auth.isLoggedIn());
   }
 }
 function AppComponent_Conditional_2_Template(rf, ctx) {
@@ -35951,13 +35968,17 @@ var AppComponent = class _AppComponent {
   isAdminPage() {
     return this.router.url.startsWith("/login/admin-panel");
   }
+  logout() {
+    this.auth.logout();
+    this.router.navigateByUrl("/");
+  }
   static {
     this.\u0275fac = function AppComponent_Factory(__ngFactoryType__) {
       return new (__ngFactoryType__ || _AppComponent)();
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AppComponent, selectors: [["app-root"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 3, vars: 2, consts: [[3, "isLoggedIn"]], template: function AppComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AppComponent, selectors: [["app-root"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 3, vars: 2, consts: [[3, "isLoggedIn"], [3, "logout", "isLoggedIn"]], template: function AppComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275template(0, AppComponent_Conditional_0_Template, 1, 1, "app-site-header", 0);
         \u0275\u0275element(1, "router-outlet");
@@ -42391,6 +42412,69 @@ var CatalogToolbarComponent = class _CatalogToolbarComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogToolbarComponent, { className: "CatalogToolbarComponent", filePath: "src/app/features/catalog/catalog-toolbar.component.ts", lineNumber: 26 });
 })();
 
+// src/app/features/catalog/home-categories.component.ts
+var _forTrack03 = ($index, $item) => $item.category;
+function HomeCategoriesComponent_For_8_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "button", 4);
+    \u0275\u0275listener("click", function HomeCategoriesComponent_For_8_Template_button_click_0_listener() {
+      const item_r2 = \u0275\u0275restoreView(_r1).$implicit;
+      const ctx_r2 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r2.selected.emit(item_r2.category));
+    });
+    \u0275\u0275element(1, "img", 5);
+    \u0275\u0275elementStart(2, "span")(3, "strong");
+    \u0275\u0275text(4);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(5, "small");
+    \u0275\u0275text(6);
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    const item_r2 = ctx.$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275property("src", item_r2.image, \u0275\u0275sanitizeUrl)("alt", item_r2.category);
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(item_r2.category);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1("", item_r2.count, " mobili");
+  }
+}
+var HomeCategoriesComponent = class _HomeCategoriesComponent {
+  constructor() {
+    this.categories = [];
+    this.selected = new EventEmitter();
+  }
+  static {
+    this.\u0275fac = function HomeCategoriesComponent_Factory(__ngFactoryType__) {
+      return new (__ngFactoryType__ || _HomeCategoriesComponent)();
+    };
+  }
+  static {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _HomeCategoriesComponent, selectors: [["app-home-categories"]], inputs: { categories: "categories" }, outputs: { selected: "selected" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 9, vars: 0, consts: [["aria-label", "Categorie mobili", 1, "home-categories"], [1, "eyebrow"], [1, "home-category-grid"], ["type", "button", 1, "home-category-card"], ["type", "button", 1, "home-category-card", 3, "click"], [3, "src", "alt"]], template: function HomeCategoriesComponent_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "section", 0)(1, "header")(2, "p", 1);
+        \u0275\u0275text(3, "Collezioni");
+        \u0275\u0275elementEnd();
+        \u0275\u0275elementStart(4, "h2");
+        \u0275\u0275text(5, "Esplora per categoria");
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(6, "div", 2);
+        \u0275\u0275repeaterCreate(7, HomeCategoriesComponent_For_8_Template, 7, 4, "button", 3, _forTrack03);
+        \u0275\u0275elementEnd()();
+      }
+      if (rf & 2) {
+        \u0275\u0275advance(7);
+        \u0275\u0275repeater(ctx.categories);
+      }
+    }, encapsulation: 2 });
+  }
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(HomeCategoriesComponent, { className: "HomeCategoriesComponent", filePath: "src/app/features/catalog/home-categories.component.ts", lineNumber: 27 });
+})();
+
 // src/app/features/catalog/home-search.component.ts
 var HomeSearchComponent = class _HomeSearchComponent {
   constructor() {
@@ -42536,7 +42620,7 @@ function CatalogComponent_Conditional_2_Template(rf, ctx) {
 function CatalogComponent_Conditional_3_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "app-catalog-toolbar", 6);
+    \u0275\u0275elementStart(0, "app-catalog-toolbar", 5);
     \u0275\u0275listener("queryChange", function CatalogComponent_Conditional_3_Conditional_0_Template_app_catalog_toolbar_queryChange_0_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
@@ -42556,17 +42640,26 @@ function CatalogComponent_Conditional_3_Conditional_0_Template(rf, ctx) {
 function CatalogComponent_Conditional_3_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "app-home-search", 7);
+    \u0275\u0275elementStart(0, "app-home-search", 6);
     \u0275\u0275listener("queryChange", function CatalogComponent_Conditional_3_Conditional_1_Template_app_home_search_queryChange_0_listener($event) {
       \u0275\u0275restoreView(_r4);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.changeQuery($event));
     });
     \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(1, "app-home-categories", 7);
+    \u0275\u0275listener("selected", function CatalogComponent_Conditional_3_Conditional_1_Template_app_home_categories_selected_1_listener($event) {
+      \u0275\u0275restoreView(_r4);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.selectHomeCategory($event));
+    });
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275property("query", ctx_r1.query);
+    \u0275\u0275advance();
+    \u0275\u0275property("categories", ctx_r1.categoryPreviews());
   }
 }
 function CatalogComponent_Conditional_3_Conditional_2_Template(rf, ctx) {
@@ -42591,7 +42684,7 @@ function CatalogComponent_Conditional_3_Conditional_2_Template(rf, ctx) {
 }
 function CatalogComponent_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, CatalogComponent_Conditional_3_Conditional_0_Template, 1, 3, "app-catalog-toolbar", 3)(1, CatalogComponent_Conditional_3_Conditional_1_Template, 1, 1, "app-home-search", 4)(2, CatalogComponent_Conditional_3_Conditional_2_Template, 1, 1, "app-catalog-grid", 5);
+    \u0275\u0275template(0, CatalogComponent_Conditional_3_Conditional_0_Template, 1, 3, "app-catalog-toolbar", 3)(1, CatalogComponent_Conditional_3_Conditional_1_Template, 2, 2)(2, CatalogComponent_Conditional_3_Conditional_2_Template, 1, 1, "app-catalog-grid", 4);
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
@@ -42609,6 +42702,7 @@ var CatalogComponent = class _CatalogComponent {
     this.heroProducts = signal([]);
     this.selectedFurniture = signal(null);
     this.categories = signal([]);
+    this.categoryPreviews = signal([]);
     this.query = "";
     this.category = "";
   }
@@ -42623,6 +42717,7 @@ var CatalogComponent = class _CatalogComponent {
   loadCategories() {
     this.api.getFurniture().subscribe((items) => {
       this.categories.set([...new Set(items.map((item) => item.category))].sort());
+      this.categoryPreviews.set(this.toCategoryPreviews(items));
     });
   }
   loadHeroProducts() {
@@ -42649,6 +42744,12 @@ var CatalogComponent = class _CatalogComponent {
   changeCategory(category) {
     this.category = category;
     this.load();
+  }
+  selectHomeCategory(category) {
+    this.category = category;
+    this.query = "";
+    this.load();
+    setTimeout(() => document.querySelector(".catalog-grid")?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
   toggleLike(item) {
     if (!this.auth.isLoggedIn()) {
@@ -42680,7 +42781,18 @@ var CatalogComponent = class _CatalogComponent {
     return !this.isCatalogPage();
   }
   shouldShowProducts() {
-    return this.isCatalogPage() || this.query.trim() !== "";
+    return this.isCatalogPage() || this.query.trim() !== "" || this.category !== "";
+  }
+  toCategoryPreviews(items) {
+    const groups = /* @__PURE__ */ new Map();
+    for (const item of items) {
+      groups.set(item.category, [...groups.get(item.category) ?? [], item]);
+    }
+    return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([category, group]) => ({
+      category,
+      count: group.length,
+      image: group.find((item) => item.images.length > 0)?.images[0] ?? ""
+    }));
   }
   static {
     this.\u0275fac = function CatalogComponent_Factory(__ngFactoryType__) {
@@ -42688,7 +42800,7 @@ var CatalogComponent = class _CatalogComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogComponent, selectors: [["app-catalog"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 4, vars: 3, consts: [[3, "isCatalogPage", "heroProducts"], [3, "item"], [3, "liked", "closed", "item"], [3, "query", "category", "categories"], [3, "query"], [3, "furniture"], [3, "queryChange", "categoryChange", "query", "category", "categories"], [3, "queryChange", "query"], [3, "liked", "selected", "furniture"]], template: function CatalogComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogComponent, selectors: [["app-catalog"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 4, vars: 3, consts: [[3, "isCatalogPage", "heroProducts"], [3, "item"], [3, "liked", "closed", "item"], [3, "query", "category", "categories"], [3, "furniture"], [3, "queryChange", "categoryChange", "query", "category", "categories"], [3, "queryChange", "query"], [3, "selected", "categories"], [3, "liked", "selected", "furniture"]], template: function CatalogComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "main");
         \u0275\u0275element(1, "app-catalog-hero", 0);
@@ -42702,11 +42814,11 @@ var CatalogComponent = class _CatalogComponent {
         \u0275\u0275advance();
         \u0275\u0275conditional((tmp_2_0 = ctx.selectedFurniture()) ? 2 : 3, tmp_2_0);
       }
-    }, dependencies: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeSearchComponent, ProductDetailComponent], encapsulation: 2 });
+    }, dependencies: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeCategoriesComponent, HomeSearchComponent, ProductDetailComponent], encapsulation: 2 });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogComponent, { className: "CatalogComponent", filePath: "src/app/features/catalog/catalog.component.ts", lineNumber: 41 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogComponent, { className: "CatalogComponent", filePath: "src/app/features/catalog/catalog.component.ts", lineNumber: 43 });
 })();
 
 // src/app/features/admin/admin.service.ts
@@ -42796,6 +42908,13 @@ function AuthFormComponent_Conditional_5_Template(rf, ctx) {
     \u0275\u0275twoWayProperty("ngModel", ctx_r1.resetToken);
   }
 }
+function AuthFormComponent_Conditional_6_Conditional_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 11);
+    \u0275\u0275text(1, "Password: minimo 8 e massimo 20 caratteri, almeno un numero e un carattere speciale.");
+    \u0275\u0275elementEnd();
+  }
+}
 function AuthFormComponent_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
@@ -42816,7 +42935,9 @@ function AuthFormComponent_Conditional_6_Template(rf, ctx) {
       return \u0275\u0275resetView(ctx_r1.showPassword = !ctx_r1.showPassword);
     });
     \u0275\u0275text(5);
-    \u0275\u0275elementEnd()()();
+    \u0275\u0275elementEnd()();
+    \u0275\u0275template(6, AuthFormComponent_Conditional_6_Conditional_6_Template, 2, 0, "span", 11);
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
@@ -42827,12 +42948,14 @@ function AuthFormComponent_Conditional_6_Template(rf, ctx) {
     \u0275\u0275twoWayProperty("ngModel", ctx_r1.password);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(ctx_r1.showPassword ? "Nascondi" : "Mostra");
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r1.mode === "register" || ctx_r1.mode === "resetConfirm" ? 6 : -1);
   }
 }
 function AuthFormComponent_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
     const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "label", 2)(1, "input", 11);
+    \u0275\u0275elementStart(0, "label", 2)(1, "input", 12);
     \u0275\u0275twoWayListener("ngModelChange", function AuthFormComponent_Conditional_7_Template_input_ngModelChange_1_listener($event) {
       \u0275\u0275restoreView(_r5);
       const ctx_r1 = \u0275\u0275nextContext();
@@ -42921,7 +43044,7 @@ var AuthFormComponent = class _AuthFormComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthFormComponent, selectors: [["app-auth-form"]], inputs: { mode: "mode", error: "error", status: "status", identifier: "identifier", resetToken: "resetToken" }, outputs: { submitted: "submitted" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 15, vars: 9, consts: [[3, "ngSubmit"], ["name", "identifier", "required", "", 3, "ngModelChange", "ngModel"], [1, "checkbox"], [1, "form-error"], [1, "form-status"], ["type", "submit", 1, "primary"], ["name", "username", "required", "", 3, "ngModelChange", "ngModel"], ["name", "resetToken", "required", "", 3, "ngModelChange", "ngModel"], [1, "password-field"], ["name", "password", "required", "", "minlength", "8", 3, "ngModelChange", "type", "ngModel"], ["type", "button", 3, "click"], ["name", "remember", "type", "checkbox", 3, "ngModelChange", "ngModel"]], template: function AuthFormComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthFormComponent, selectors: [["app-auth-form"]], inputs: { mode: "mode", error: "error", status: "status", identifier: "identifier", resetToken: "resetToken" }, outputs: { submitted: "submitted" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 15, vars: 9, consts: [[3, "ngSubmit"], ["name", "identifier", "required", "", 3, "ngModelChange", "ngModel"], [1, "checkbox"], [1, "form-error"], [1, "form-status"], ["type", "submit", 1, "primary"], ["name", "username", "required", "", 3, "ngModelChange", "ngModel"], ["name", "resetToken", "required", "", 3, "ngModelChange", "ngModel"], [1, "password-field"], ["name", "password", "required", "", "minlength", "8", "maxlength", "20", "pattern", "^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,20}$", "autocomplete", "current-password", 3, "ngModelChange", "type", "ngModel"], ["type", "button", 3, "click"], [1, "password-rules"], ["name", "remember", "type", "checkbox", 3, "ngModelChange", "ngModel"]], template: function AuthFormComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "form", 0);
         \u0275\u0275listener("ngSubmit", function AuthFormComponent_Template_form_ngSubmit_0_listener() {
@@ -42936,7 +43059,7 @@ var AuthFormComponent = class _AuthFormComponent {
           return $event;
         });
         \u0275\u0275elementEnd()();
-        \u0275\u0275template(5, AuthFormComponent_Conditional_5_Template, 3, 1, "label")(6, AuthFormComponent_Conditional_6_Template, 6, 4, "label")(7, AuthFormComponent_Conditional_7_Template, 3, 1, "label", 2)(8, AuthFormComponent_Conditional_8_Template, 2, 1, "p", 3)(9, AuthFormComponent_Conditional_9_Template, 2, 1, "p", 4);
+        \u0275\u0275template(5, AuthFormComponent_Conditional_5_Template, 3, 1, "label")(6, AuthFormComponent_Conditional_6_Template, 7, 5, "label")(7, AuthFormComponent_Conditional_7_Template, 3, 1, "label", 2)(8, AuthFormComponent_Conditional_8_Template, 2, 1, "p", 3)(9, AuthFormComponent_Conditional_9_Template, 2, 1, "p", 4);
         \u0275\u0275elementStart(10, "button", 5);
         \u0275\u0275template(11, AuthFormComponent_Conditional_11_Template, 1, 0)(12, AuthFormComponent_Conditional_12_Template, 1, 0)(13, AuthFormComponent_Conditional_13_Template, 1, 0)(14, AuthFormComponent_Conditional_14_Template, 1, 0);
         \u0275\u0275elementEnd()();
@@ -42961,11 +43084,11 @@ var AuthFormComponent = class _AuthFormComponent {
         \u0275\u0275advance(2);
         \u0275\u0275conditional(ctx.mode === "login" ? 11 : ctx.mode === "register" ? 12 : ctx.mode === "resetRequest" ? 13 : 14);
       }
-    }, dependencies: [FormsModule, \u0275NgNoValidate, DefaultValueAccessor, CheckboxControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, NgModel, NgForm], encapsulation: 2 });
+    }, dependencies: [FormsModule, \u0275NgNoValidate, DefaultValueAccessor, CheckboxControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, NgModel, NgForm], encapsulation: 2 });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthFormComponent, { className: "AuthFormComponent", filePath: "src/app/features/auth/auth-form.component.ts", lineNumber: 58 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AuthFormComponent, { className: "AuthFormComponent", filePath: "src/app/features/auth/auth-form.component.ts", lineNumber: 70 });
 })();
 
 // src/app/features/auth/auth-switch.component.ts
@@ -43107,10 +43230,10 @@ var AuthComponent = class _AuthComponent {
     this.resetToken = form.resetToken;
     if (this.mode === "resetRequest") {
       this.auth.requestPasswordReset(form.identifier).subscribe({
-        next: (response) => {
-          this.status = response.resetLink ? `Link generato per sviluppo: ${response.resetLink}` : "Se l\u2019email esiste, riceverai un link per reimpostare la password.";
+        next: () => {
+          this.status = "Se l\u2019email esiste, riceverai un link per reimpostare la password.";
         },
-        error: () => this.error = "Inserisci un indirizzo email valido."
+        error: () => this.error = "Non e stato possibile inviare la mail di reset."
       });
       return;
     }
@@ -43135,13 +43258,13 @@ var AuthComponent = class _AuthComponent {
     }
     this.auth.register(form.username, form.identifier, form.password).subscribe({
       next: () => this.router.navigateByUrl("/area-personale"),
-      error: () => this.error = "Credenziali non valide o dati gia registrati."
+      error: () => this.error = "Credenziali non valide."
     });
   }
   loginUser(form) {
     this.auth.login(form.identifier, form.password, form.remember).subscribe({
       next: () => this.router.navigateByUrl("/area-personale"),
-      error: () => this.error = "Credenziali non valide o dati gia registrati."
+      error: () => this.error = "Credenziali non valide."
     });
   }
   static {
@@ -43188,7 +43311,6 @@ var AuthComponent = class _AuthComponent {
 var AccountHeaderComponent = class _AccountHeaderComponent {
   constructor() {
     this.username = "";
-    this.logout = new EventEmitter();
   }
   static {
     this.\u0275fac = function AccountHeaderComponent_Factory(__ngFactoryType__) {
@@ -43196,20 +43318,14 @@ var AccountHeaderComponent = class _AccountHeaderComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AccountHeaderComponent, selectors: [["app-account-header"]], inputs: { username: "username" }, outputs: { logout: "logout" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 8, vars: 1, consts: [[1, "account-header"], [1, "eyebrow"], ["type", "button", 1, "secondary", 3, "click"]], template: function AccountHeaderComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AccountHeaderComponent, selectors: [["app-account-header"]], inputs: { username: "username" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 6, vars: 1, consts: [[1, "account-header"], [1, "eyebrow"]], template: function AccountHeaderComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "section", 0)(1, "div")(2, "p", 1);
         \u0275\u0275text(3);
         \u0275\u0275elementEnd();
         \u0275\u0275elementStart(4, "h1");
         \u0275\u0275text(5, "I tuoi preferiti");
-        \u0275\u0275elementEnd()();
-        \u0275\u0275elementStart(6, "button", 2);
-        \u0275\u0275listener("click", function AccountHeaderComponent_Template_button_click_6_listener() {
-          return ctx.logout.emit();
-        });
-        \u0275\u0275text(7, "Esci");
-        \u0275\u0275elementEnd()();
+        \u0275\u0275elementEnd()()();
       }
       if (rf & 2) {
         \u0275\u0275advance(3);
@@ -43219,11 +43335,11 @@ var AccountHeaderComponent = class _AccountHeaderComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AccountHeaderComponent, { className: "AccountHeaderComponent", filePath: "src/app/features/account/account-header.component.ts", lineNumber: 16 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AccountHeaderComponent, { className: "AccountHeaderComponent", filePath: "src/app/features/account/account-header.component.ts", lineNumber: 15 });
 })();
 
 // src/app/features/account/favorites-section.component.ts
-var _forTrack03 = ($index, $item) => $item.id;
+var _forTrack04 = ($index, $item) => $item.id;
 function FavoritesSectionComponent_For_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -43261,7 +43377,7 @@ var FavoritesSectionComponent = class _FavoritesSectionComponent {
     this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _FavoritesSectionComponent, selectors: [["app-favorites-section"]], inputs: { favorites: "favorites" }, outputs: { remove: "remove" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 4, vars: 1, consts: [[1, "catalog-grid", "compact"], [3, "item"], [1, "empty"], [3, "liked", "item"]], template: function FavoritesSectionComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "section", 0);
-        \u0275\u0275repeaterCreate(1, FavoritesSectionComponent_For_2_Template, 1, 1, "app-furniture-card", 1, _forTrack03, false, FavoritesSectionComponent_ForEmpty_3_Template, 2, 0, "p", 2);
+        \u0275\u0275repeaterCreate(1, FavoritesSectionComponent_For_2_Template, 1, 1, "app-furniture-card", 1, _forTrack04, false, FavoritesSectionComponent_ForEmpty_3_Template, 2, 0, "p", 2);
         \u0275\u0275elementEnd();
       }
       if (rf & 2) {
@@ -43371,13 +43487,7 @@ function AccountComponent_Conditional_1_Template(rf, ctx) {
 function AccountComponent_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "app-account-header", 3);
-    \u0275\u0275listener("logout", function AccountComponent_Conditional_2_Template_app_account_header_logout_0_listener() {
-      \u0275\u0275restoreView(_r1);
-      const ctx_r1 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r1.logout());
-    });
-    \u0275\u0275elementEnd();
+    \u0275\u0275element(0, "app-account-header", 3);
     \u0275\u0275elementStart(1, "app-favorites-section", 4);
     \u0275\u0275listener("remove", function AccountComponent_Conditional_2_Template_app_favorites_section_remove_1_listener($event) {
       \u0275\u0275restoreView(_r1);
@@ -43427,10 +43537,6 @@ var AccountComponent = class _AccountComponent {
       }
     });
   }
-  logout() {
-    this.auth.logout();
-    this.router.navigateByUrl("/");
-  }
   send(request) {
     this.api.sendInquiry(request.subject, request.message).subscribe(() => {
       this.status = "Richiesta inviata. La maison ti rispondera via email.";
@@ -43442,7 +43548,7 @@ var AccountComponent = class _AccountComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AccountComponent, selectors: [["app-account"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 3, vars: 1, consts: [[1, "account-page"], [1, "auth-required"], ["routerLink", "/login", 1, "primary"], [3, "logout", "username"], [3, "remove", "favorites"], [3, "sent", "status"]], template: function AccountComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AccountComponent, selectors: [["app-account"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 3, vars: 1, consts: [[1, "account-page"], [1, "auth-required"], ["routerLink", "/login", 1, "primary"], [3, "username"], [3, "remove", "favorites"], [3, "sent", "status"]], template: function AccountComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "main", 0);
         \u0275\u0275template(1, AccountComponent_Conditional_1_Template, 7, 0, "section", 1)(2, AccountComponent_Conditional_2_Template, 3, 3);
@@ -43460,7 +43566,7 @@ var AccountComponent = class _AccountComponent {
 })();
 
 // src/app/features/admin/admin-furniture-form.component.ts
-var _forTrack04 = ($index, $item) => $item.name;
+var _forTrack05 = ($index, $item) => $item.name;
 function AdminFurnitureFormComponent_Conditional_18_For_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -43506,7 +43612,7 @@ function AdminFurnitureFormComponent_Conditional_25_For_2_Template(rf, ctx) {
 function AdminFurnitureFormComponent_Conditional_25_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "ul");
-    \u0275\u0275repeaterCreate(1, AdminFurnitureFormComponent_Conditional_25_For_2_Template, 2, 1, "li", null, _forTrack04);
+    \u0275\u0275repeaterCreate(1, AdminFurnitureFormComponent_Conditional_25_For_2_Template, 2, 1, "li", null, _forTrack05);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -43704,7 +43810,7 @@ var AdminFurnitureFormComponent = class _AdminFurnitureFormComponent {
 })();
 
 // src/app/features/admin/admin-furniture-list.component.ts
-var _forTrack05 = ($index, $item) => $item.category;
+var _forTrack06 = ($index, $item) => $item.category;
 var _forTrack12 = ($index, $item) => $item.id;
 function AdminFurnitureListComponent_For_2_For_8_Template(rf, ctx) {
   if (rf & 1) {
@@ -43794,7 +43900,7 @@ var AdminFurnitureListComponent = class _AdminFurnitureListComponent {
     this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AdminFurnitureListComponent, selectors: [["app-admin-furniture-list"]], inputs: { furniture: "furniture" }, outputs: { edit: "edit", remove: "remove" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 4, vars: 1, consts: [["aria-label", "Mobili in catalogo", 1, "admin-list"], [1, "admin-category-section"], [1, "empty"], [1, "eyebrow"], [1, "admin-category-list"], [3, "src", "alt"], [1, "admin-row-actions"], ["type", "button", 1, "secondary", 3, "click"], ["type", "button", 1, "secondary", "danger", 3, "click"]], template: function AdminFurnitureListComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "section", 0);
-        \u0275\u0275repeaterCreate(1, AdminFurnitureListComponent_For_2_Template, 9, 1, "div", 1, _forTrack05, false, AdminFurnitureListComponent_ForEmpty_3_Template, 2, 0, "p", 2);
+        \u0275\u0275repeaterCreate(1, AdminFurnitureListComponent_For_2_Template, 9, 1, "div", 1, _forTrack06, false, AdminFurnitureListComponent_ForEmpty_3_Template, 2, 0, "p", 2);
         \u0275\u0275elementEnd();
       }
       if (rf & 2) {
