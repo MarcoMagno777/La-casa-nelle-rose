@@ -35678,6 +35678,9 @@ var ApiService = class _ApiService {
   recordVisit(path) {
     return this.http.post(`${this.baseUrl}/visits`, { path });
   }
+  getSiteSettings() {
+    return this.http.get(`${this.baseUrl}/site-settings`);
+  }
   getFavorites() {
     return this.http.get(`${this.baseUrl}/me/favorites`);
   }
@@ -35719,6 +35722,9 @@ var ApiService = class _ApiService {
   }
   deleteFurniture(id) {
     return this.http.delete(`${this.baseUrl}/admin/furniture/${id}`);
+  }
+  updateSiteSettings(data) {
+    return this.http.post(`${this.baseUrl}/admin/site-settings`, data);
   }
   static {
     this.\u0275fac = function ApiService_Factory(__ngFactoryType__) {
@@ -35867,14 +35873,14 @@ var SiteFooterComponent = class _SiteFooterComponent {
 
 // src/app/shared/site-header.component.ts
 var _c0 = () => ({ exact: true });
-function SiteHeaderComponent_Conditional_13_Template(rf, ctx) {
+function SiteHeaderComponent_Conditional_12_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "a", 7);
+    \u0275\u0275elementStart(0, "a", 8);
     \u0275\u0275text(1, "Area personale");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "button", 8);
-    \u0275\u0275listener("click", function SiteHeaderComponent_Conditional_13_Template_button_click_2_listener() {
+    \u0275\u0275elementStart(2, "button", 9);
+    \u0275\u0275listener("click", function SiteHeaderComponent_Conditional_12_Template_button_click_2_listener() {
       \u0275\u0275restoreView(_r1);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.logout.emit());
@@ -35883,9 +35889,9 @@ function SiteHeaderComponent_Conditional_13_Template(rf, ctx) {
     \u0275\u0275elementEnd();
   }
 }
-function SiteHeaderComponent_Conditional_14_Template(rf, ctx) {
+function SiteHeaderComponent_Conditional_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "a", 6);
+    \u0275\u0275elementStart(0, "a", 7);
     \u0275\u0275text(1, "Login");
     \u0275\u0275elementEnd();
   }
@@ -35901,36 +35907,36 @@ var SiteHeaderComponent = class _SiteHeaderComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SiteHeaderComponent, selectors: [["app-site-header"]], inputs: { isLoggedIn: "isLoggedIn" }, outputs: { logout: "logout" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 15, vars: 3, consts: [[1, "site-header"], ["routerLink", "/", 1, "brand"], ["src", "/assets/la-casa-nelle-rose-logo.jpg", "alt", "", "aria-hidden", "true"], ["aria-label", "Navigazione principale"], ["routerLink", "/", "routerLinkActive", "active", 3, "routerLinkActiveOptions"], ["routerLink", "/catalogo", "routerLinkActive", "active"], ["routerLink", "/login", "routerLinkActive", "active"], ["routerLink", "/area-personale", "routerLinkActive", "active"], ["type", "button", 1, "link-button", 3, "click"]], template: function SiteHeaderComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SiteHeaderComponent, selectors: [["app-site-header"]], inputs: { isLoggedIn: "isLoggedIn" }, outputs: { logout: "logout" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 14, vars: 3, consts: [[1, "site-header"], ["routerLink", "/", 1, "brand"], ["src", "/assets/la-casa-nelle-rose-logo.jpg", "alt", "", "aria-hidden", "true"], ["aria-label", "Navigazione principale"], ["routerLink", "/", "routerLinkActive", "active", 3, "routerLinkActiveOptions"], ["routerLink", "/catalogo", "routerLinkActive", "active"], ["routerLink", "/realizzazioni", "routerLinkActive", "active"], ["routerLink", "/login", "routerLinkActive", "active"], ["routerLink", "/area-personale", "routerLinkActive", "active"], ["type", "button", 1, "link-button", 3, "click"]], template: function SiteHeaderComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "header", 0)(1, "a", 1);
         \u0275\u0275element(2, "img", 2);
-        \u0275\u0275elementStart(3, "span")(4, "strong");
-        \u0275\u0275text(5, "La Casa nelle Rose");
+        \u0275\u0275elementStart(3, "strong");
+        \u0275\u0275text(4, "La Casa nelle Rose");
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(5, "nav", 3)(6, "a", 4);
+        \u0275\u0275text(7, "Home");
         \u0275\u0275elementEnd();
-        \u0275\u0275elementStart(6, "small");
-        \u0275\u0275text(7, "Arredamento provenzale");
-        \u0275\u0275elementEnd()()();
-        \u0275\u0275elementStart(8, "nav", 3)(9, "a", 4);
-        \u0275\u0275text(10, "Home");
+        \u0275\u0275elementStart(8, "a", 5);
+        \u0275\u0275text(9, "Catalogo");
         \u0275\u0275elementEnd();
-        \u0275\u0275elementStart(11, "a", 5);
-        \u0275\u0275text(12, "Catalogo");
+        \u0275\u0275elementStart(10, "a", 6);
+        \u0275\u0275text(11, "Realizzazioni");
         \u0275\u0275elementEnd();
-        \u0275\u0275template(13, SiteHeaderComponent_Conditional_13_Template, 4, 0)(14, SiteHeaderComponent_Conditional_14_Template, 2, 0, "a", 6);
+        \u0275\u0275template(12, SiteHeaderComponent_Conditional_12_Template, 4, 0)(13, SiteHeaderComponent_Conditional_13_Template, 2, 0, "a", 7);
         \u0275\u0275elementEnd()();
       }
       if (rf & 2) {
-        \u0275\u0275advance(9);
+        \u0275\u0275advance(6);
         \u0275\u0275property("routerLinkActiveOptions", \u0275\u0275pureFunction0(2, _c0));
-        \u0275\u0275advance(4);
-        \u0275\u0275conditional(ctx.isLoggedIn ? 13 : 14);
+        \u0275\u0275advance(6);
+        \u0275\u0275conditional(ctx.isLoggedIn ? 12 : 13);
       }
     }, dependencies: [RouterLink, RouterLinkActive], encapsulation: 2 });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SiteHeaderComponent, { className: "SiteHeaderComponent", filePath: "src/app/shared/site-header.component.ts", lineNumber: 30 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SiteHeaderComponent, { className: "SiteHeaderComponent", filePath: "src/app/shared/site-header.component.ts", lineNumber: 28 });
 })();
 
 // src/app/app.component.ts
@@ -36168,19 +36174,19 @@ var CatalogGridComponent = class _CatalogGridComponent {
 
 // src/app/features/catalog/catalog-hero.component.ts
 var _forTrack02 = ($index, $item) => $item.id;
-function CatalogHeroComponent_Conditional_1_For_2_Template(rf, ctx) {
+function CatalogHeroComponent_Conditional_2_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 5);
+    \u0275\u0275element(0, "img", 7);
   }
   if (rf & 2) {
     const item_r1 = ctx.$implicit;
     \u0275\u0275property("src", item_r1.images[0], \u0275\u0275sanitizeUrl)("alt", item_r1.name);
   }
 }
-function CatalogHeroComponent_Conditional_1_Template(rf, ctx) {
+function CatalogHeroComponent_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 1);
-    \u0275\u0275repeaterCreate(1, CatalogHeroComponent_Conditional_1_For_2_Template, 1, 2, "img", 5, _forTrack02);
+    \u0275\u0275elementStart(0, "div", 2);
+    \u0275\u0275repeaterCreate(1, CatalogHeroComponent_Conditional_2_For_2_Template, 1, 2, "img", 7, _forTrack02);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -36189,9 +36195,9 @@ function CatalogHeroComponent_Conditional_1_Template(rf, ctx) {
     \u0275\u0275repeater(ctx_r1.heroProducts);
   }
 }
-function CatalogHeroComponent_Conditional_9_Template(rf, ctx) {
+function CatalogHeroComponent_Conditional_11_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 4)(1, "span");
+    \u0275\u0275elementStart(0, "div", 6)(1, "span");
     \u0275\u0275text(2, "Via D. Alighieri, 22");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(3, "strong");
@@ -36206,6 +36212,14 @@ var CatalogHeroComponent = class _CatalogHeroComponent {
   constructor() {
     this.isCatalogPage = false;
     this.heroProducts = [];
+    this.homeHeroImage = "";
+    this.catalogHeroImage = "";
+  }
+  visualBackground() {
+    const image = this.isCatalogPage ? this.catalogHeroImage : this.homeHeroImage;
+    if (!image)
+      return null;
+    return `url("${image}")`;
   }
   static {
     this.\u0275fac = function CatalogHeroComponent_Factory(__ngFactoryType__) {
@@ -36213,34 +36227,40 @@ var CatalogHeroComponent = class _CatalogHeroComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogHeroComponent, selectors: [["app-catalog-hero"]], inputs: { isCatalogPage: "isCatalogPage", heroProducts: "heroProducts" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 10, vars: 4, consts: [[1, "hero"], ["aria-hidden", "true", 1, "hero-product-backdrop"], [1, "hero-copy"], [1, "eyebrow"], [1, "hero-panel"], [3, "src", "alt"]], template: function CatalogHeroComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogHeroComponent, selectors: [["app-catalog-hero"]], inputs: { isCatalogPage: "isCatalogPage", heroProducts: "heroProducts", homeHeroImage: "homeHeroImage", catalogHeroImage: "catalogHeroImage" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 12, vars: 9, consts: [[1, "hero"], [1, "hero-visual"], ["aria-hidden", "true", 1, "hero-product-backdrop"], [1, "hero-content"], [1, "hero-copy"], [1, "eyebrow"], [1, "hero-panel"], [3, "src", "alt"]], template: function CatalogHeroComponent_Template(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275elementStart(0, "section", 0);
-        \u0275\u0275template(1, CatalogHeroComponent_Conditional_1_Template, 3, 0, "div", 1);
-        \u0275\u0275elementStart(2, "div", 2)(3, "p", 3);
-        \u0275\u0275text(4, "Arredamento provenzale e mobili francesi");
+        \u0275\u0275elementStart(0, "section", 0)(1, "div", 1);
+        \u0275\u0275template(2, CatalogHeroComponent_Conditional_2_Template, 3, 0, "div", 2);
         \u0275\u0275elementEnd();
-        \u0275\u0275elementStart(5, "h1");
-        \u0275\u0275text(6, "La Casa nelle Rose");
+        \u0275\u0275elementStart(3, "div", 3)(4, "div", 4)(5, "p", 5);
+        \u0275\u0275text(6, "Arredamento provenzale e mobili francesi");
         \u0275\u0275elementEnd();
-        \u0275\u0275elementStart(7, "p");
-        \u0275\u0275text(8, " Oggetti vissuti, mobili francesi, pezzi decapati, tessuti e complementi scelti per portare in casa bellezza, semplicita e atmosfera. ");
+        \u0275\u0275elementStart(7, "h1");
+        \u0275\u0275text(8);
+        \u0275\u0275elementEnd();
+        \u0275\u0275elementStart(9, "p");
+        \u0275\u0275text(10, " Oggetti vissuti, mobili francesi, pezzi decapati, tessuti e complementi scelti per portare in casa bellezza, semplicita e atmosfera. ");
         \u0275\u0275elementEnd()();
-        \u0275\u0275template(9, CatalogHeroComponent_Conditional_9_Template, 7, 0, "div", 4);
-        \u0275\u0275elementEnd();
+        \u0275\u0275template(11, CatalogHeroComponent_Conditional_11_Template, 7, 0, "div", 6);
+        \u0275\u0275elementEnd()();
       }
       if (rf & 2) {
         \u0275\u0275classProp("catalog-hero", ctx.isCatalogPage);
         \u0275\u0275advance();
-        \u0275\u0275conditional(ctx.isCatalogPage ? 1 : -1);
-        \u0275\u0275advance(8);
-        \u0275\u0275conditional(!ctx.isCatalogPage ? 9 : -1);
+        \u0275\u0275styleProp("background-image", ctx.visualBackground());
+        \u0275\u0275classProp("custom-catalog-hero", ctx.isCatalogPage && ctx.catalogHeroImage);
+        \u0275\u0275advance();
+        \u0275\u0275conditional(ctx.isCatalogPage && !ctx.catalogHeroImage ? 2 : -1);
+        \u0275\u0275advance(6);
+        \u0275\u0275textInterpolate(ctx.isCatalogPage ? "Catalogo" : "Mobili francesi e atmosfere di casa");
+        \u0275\u0275advance(3);
+        \u0275\u0275conditional(!ctx.isCatalogPage ? 11 : -1);
       }
     }, encapsulation: 2 });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogHeroComponent, { className: "CatalogHeroComponent", filePath: "src/app/features/catalog/catalog-hero.component.ts", lineNumber: 34 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogHeroComponent, { className: "CatalogHeroComponent", filePath: "src/app/features/catalog/catalog-hero.component.ts", lineNumber: 38 });
 })();
 
 // node_modules/@angular/forms/fesm2022/forms.mjs
@@ -42700,6 +42720,7 @@ var CatalogComponent = class _CatalogComponent {
     this.router = inject(Router);
     this.furniture = signal([]);
     this.heroProducts = signal([]);
+    this.siteSettings = signal(null);
     this.selectedFurniture = signal(null);
     this.categories = signal([]);
     this.categoryPreviews = signal([]);
@@ -42707,12 +42728,16 @@ var CatalogComponent = class _CatalogComponent {
     this.category = "";
   }
   ngOnInit() {
+    this.loadSiteSettings();
     this.loadCategories();
     if (this.isCatalogPage()) {
       this.load();
       return;
     }
     this.loadHeroProducts();
+  }
+  loadSiteSettings() {
+    this.api.getSiteSettings().subscribe((settings) => this.siteSettings.set(settings));
   }
   loadCategories() {
     this.api.getFurniture().subscribe((items) => {
@@ -42800,7 +42825,7 @@ var CatalogComponent = class _CatalogComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogComponent, selectors: [["app-catalog"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 4, vars: 3, consts: [[3, "isCatalogPage", "heroProducts"], [3, "item"], [3, "liked", "closed", "item"], [3, "query", "category", "categories"], [3, "furniture"], [3, "queryChange", "categoryChange", "query", "category", "categories"], [3, "queryChange", "query"], [3, "selected", "categories"], [3, "liked", "selected", "furniture"]], template: function CatalogComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogComponent, selectors: [["app-catalog"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 4, vars: 5, consts: [[3, "isCatalogPage", "heroProducts", "homeHeroImage", "catalogHeroImage"], [3, "item"], [3, "liked", "closed", "item"], [3, "query", "category", "categories"], [3, "furniture"], [3, "queryChange", "categoryChange", "query", "category", "categories"], [3, "queryChange", "query"], [3, "selected", "categories"], [3, "liked", "selected", "furniture"]], template: function CatalogComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "main");
         \u0275\u0275element(1, "app-catalog-hero", 0);
@@ -42809,16 +42834,18 @@ var CatalogComponent = class _CatalogComponent {
       }
       if (rf & 2) {
         let tmp_2_0;
+        let tmp_3_0;
+        let tmp_4_0;
         \u0275\u0275advance();
-        \u0275\u0275property("isCatalogPage", ctx.isCatalogPage())("heroProducts", ctx.heroProducts());
+        \u0275\u0275property("isCatalogPage", ctx.isCatalogPage())("heroProducts", ctx.heroProducts())("homeHeroImage", (tmp_2_0 = (tmp_2_0 = ctx.siteSettings()) == null ? null : tmp_2_0.homeHeroImage) !== null && tmp_2_0 !== void 0 ? tmp_2_0 : "")("catalogHeroImage", (tmp_3_0 = (tmp_3_0 = ctx.siteSettings()) == null ? null : tmp_3_0.catalogHeroImage) !== null && tmp_3_0 !== void 0 ? tmp_3_0 : "");
         \u0275\u0275advance();
-        \u0275\u0275conditional((tmp_2_0 = ctx.selectedFurniture()) ? 2 : 3, tmp_2_0);
+        \u0275\u0275conditional((tmp_4_0 = ctx.selectedFurniture()) ? 2 : 3, tmp_4_0);
       }
     }, dependencies: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeCategoriesComponent, HomeSearchComponent, ProductDetailComponent], encapsulation: 2 });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogComponent, { className: "CatalogComponent", filePath: "src/app/features/catalog/catalog.component.ts", lineNumber: 43 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogComponent, { className: "CatalogComponent", filePath: "src/app/features/catalog/catalog.component.ts", lineNumber: 48 });
 })();
 
 // src/app/features/admin/admin.service.ts
@@ -42848,6 +42875,9 @@ var AdminService = class _AdminService {
   furniture() {
     return this.api.adminFurniture();
   }
+  siteSettings() {
+    return this.api.getSiteSettings();
+  }
   createFurniture(data) {
     return this.api.createFurniture(data);
   }
@@ -42856,6 +42886,9 @@ var AdminService = class _AdminService {
   }
   deleteFurniture(id) {
     return this.api.deleteFurniture(id);
+  }
+  updateSiteSettings(data) {
+    return this.api.updateSiteSettings(data);
   }
   static {
     this.\u0275fac = function AdminService_Factory(__ngFactoryType__) {
@@ -43914,6 +43947,79 @@ var AdminFurnitureListComponent = class _AdminFurnitureListComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AdminFurnitureListComponent, { className: "AdminFurnitureListComponent", filePath: "src/app/features/admin/admin-furniture-list.component.ts", lineNumber: 37 });
 })();
 
+// src/app/features/admin/admin-hero-settings.component.ts
+var AdminHeroSettingsComponent = class _AdminHeroSettingsComponent {
+  constructor() {
+    this.settings = null;
+    this.fallbackCatalogImage = "/assets/hero-la-casa-nelle-rose.png";
+    this.hasChanges = false;
+    this.homeSelected = new EventEmitter();
+    this.catalogSelected = new EventEmitter();
+    this.save = new EventEmitter();
+  }
+  selectFile(event, target) {
+    const input2 = event.target;
+    const file = input2.files?.[0] ?? null;
+    if (target === "home") {
+      this.homeSelected.emit(file);
+      return;
+    }
+    this.catalogSelected.emit(file);
+  }
+  static {
+    this.\u0275fac = function AdminHeroSettingsComponent_Factory(__ngFactoryType__) {
+      return new (__ngFactoryType__ || _AdminHeroSettingsComponent)();
+    };
+  }
+  static {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AdminHeroSettingsComponent, selectors: [["app-admin-hero-settings"]], inputs: { settings: "settings", fallbackCatalogImage: "fallbackCatalogImage", hasChanges: "hasChanges" }, outputs: { homeSelected: "homeSelected", catalogSelected: "catalogSelected", save: "save" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 19, vars: 3, consts: [[1, "admin-hero-settings"], [1, "eyebrow"], [1, "hero-setting-grid"], ["alt", "", 3, "src"], ["type", "file", "accept", "image/jpeg,image/png,image/webp", 3, "change"], ["type", "button", 1, "secondary", 3, "click", "disabled"]], template: function AdminHeroSettingsComponent_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "section", 0)(1, "header")(2, "p", 1);
+        \u0275\u0275text(3, "Immagini di sfondo");
+        \u0275\u0275elementEnd();
+        \u0275\u0275elementStart(4, "h2");
+        \u0275\u0275text(5, "Home e catalogo");
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(6, "div", 2)(7, "label")(8, "span");
+        \u0275\u0275text(9, "Home page");
+        \u0275\u0275elementEnd();
+        \u0275\u0275element(10, "img", 3);
+        \u0275\u0275elementStart(11, "input", 4);
+        \u0275\u0275listener("change", function AdminHeroSettingsComponent_Template_input_change_11_listener($event) {
+          return ctx.selectFile($event, "home");
+        });
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(12, "label")(13, "span");
+        \u0275\u0275text(14, "Catalogo");
+        \u0275\u0275elementEnd();
+        \u0275\u0275element(15, "img", 3);
+        \u0275\u0275elementStart(16, "input", 4);
+        \u0275\u0275listener("change", function AdminHeroSettingsComponent_Template_input_change_16_listener($event) {
+          return ctx.selectFile($event, "catalog");
+        });
+        \u0275\u0275elementEnd()()();
+        \u0275\u0275elementStart(17, "button", 5);
+        \u0275\u0275listener("click", function AdminHeroSettingsComponent_Template_button_click_17_listener() {
+          return ctx.save.emit();
+        });
+        \u0275\u0275text(18, " Salva sfondi ");
+        \u0275\u0275elementEnd()();
+      }
+      if (rf & 2) {
+        \u0275\u0275advance(10);
+        \u0275\u0275property("src", (ctx.settings == null ? null : ctx.settings.homeHeroImage) || "/assets/hero-la-casa-nelle-rose.png", \u0275\u0275sanitizeUrl);
+        \u0275\u0275advance(5);
+        \u0275\u0275property("src", (ctx.settings == null ? null : ctx.settings.catalogHeroImage) || ctx.fallbackCatalogImage, \u0275\u0275sanitizeUrl);
+        \u0275\u0275advance(2);
+        \u0275\u0275property("disabled", !ctx.hasChanges);
+      }
+    }, encapsulation: 2 });
+  }
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AdminHeroSettingsComponent, { className: "AdminHeroSettingsComponent", filePath: "src/app/features/admin/admin-hero-settings.component.ts", lineNumber: 34 });
+})();
+
 // src/app/features/admin/admin.models.ts
 var emptyFurnitureForm = () => ({
   name: "",
@@ -44051,38 +44157,53 @@ function AdminComponent_Conditional_2_Template(rf, ctx) {
     \u0275\u0275text(8, "Esci");
     \u0275\u0275elementEnd()();
     \u0275\u0275element(9, "app-admin-stats", 7);
-    \u0275\u0275elementStart(10, "section", 8)(11, "app-admin-furniture-form", 9);
-    \u0275\u0275listener("filesSelected", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_filesSelected_11_listener($event) {
+    \u0275\u0275elementStart(10, "app-admin-hero-settings", 8);
+    \u0275\u0275listener("homeSelected", function AdminComponent_Conditional_2_Template_app_admin_hero_settings_homeSelected_10_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.homeHeroFile = $event);
+    })("catalogSelected", function AdminComponent_Conditional_2_Template_app_admin_hero_settings_catalogSelected_10_listener($event) {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.catalogHeroFile = $event);
+    })("save", function AdminComponent_Conditional_2_Template_app_admin_hero_settings_save_10_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.saveHeroSettings());
+    });
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(11, "section", 9)(12, "app-admin-furniture-form", 10);
+    \u0275\u0275listener("filesSelected", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_filesSelected_12_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.files = $event);
-    })("removeExistingImage", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_removeExistingImage_11_listener($event) {
+    })("removeExistingImage", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_removeExistingImage_12_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.removeExistingImage($event));
-    })("save", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_save_11_listener() {
+    })("save", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_save_12_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.save());
-    })("cancel", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_cancel_11_listener() {
+    })("cancel", function AdminComponent_Conditional_2_Template_app_admin_furniture_form_cancel_12_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.resetForm());
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "section", 10)(13, "app-admin-search", 11);
-    \u0275\u0275listener("queryChange", function AdminComponent_Conditional_2_Template_app_admin_search_queryChange_13_listener($event) {
+    \u0275\u0275elementStart(13, "section", 11)(14, "app-admin-search", 12);
+    \u0275\u0275listener("queryChange", function AdminComponent_Conditional_2_Template_app_admin_search_queryChange_14_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.searchQuery.set($event));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "app-admin-furniture-list", 12);
-    \u0275\u0275listener("edit", function AdminComponent_Conditional_2_Template_app_admin_furniture_list_edit_14_listener($event) {
+    \u0275\u0275elementStart(15, "app-admin-furniture-list", 13);
+    \u0275\u0275listener("edit", function AdminComponent_Conditional_2_Template_app_admin_furniture_list_edit_15_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.edit($event));
-    })("remove", function AdminComponent_Conditional_2_Template_app_admin_furniture_list_remove_14_listener($event) {
+    })("remove", function AdminComponent_Conditional_2_Template_app_admin_furniture_list_remove_15_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r1.remove($event));
@@ -44093,6 +44214,8 @@ function AdminComponent_Conditional_2_Template(rf, ctx) {
     const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(9);
     \u0275\u0275property("stats", ctx_r1.stats())("furnitureCount", ctx_r1.furniture().length);
+    \u0275\u0275advance();
+    \u0275\u0275property("settings", ctx_r1.siteSettings())("fallbackCatalogImage", ctx_r1.fallbackCatalogImage())("hasChanges", ctx_r1.hasHeroChanges());
     \u0275\u0275advance(2);
     \u0275\u0275property("form", ctx_r1.form)("editingId", ctx_r1.editingId())("error", ctx_r1.error())("status", ctx_r1.status())("selectedFiles", ctx_r1.files);
     \u0275\u0275advance(2);
@@ -44107,11 +44230,14 @@ var AdminComponent = class _AdminComponent {
     this.router = inject(Router);
     this.stats = signal(null);
     this.furniture = signal([]);
+    this.siteSettings = signal(null);
     this.searchQuery = signal("");
     this.editingId = signal(null);
     this.error = signal("");
     this.status = signal("");
     this.files = [];
+    this.homeHeroFile = null;
+    this.catalogHeroFile = null;
     this.form = emptyFurnitureForm();
   }
   ngOnInit() {
@@ -44129,6 +44255,7 @@ var AdminComponent = class _AdminComponent {
   load() {
     this.admin.stats().subscribe((stats) => this.stats.set(stats));
     this.admin.furniture().subscribe((items) => this.furniture.set(items));
+    this.admin.siteSettings().subscribe((settings) => this.siteSettings.set(settings));
   }
   filteredFurniture() {
     const query = this.searchQuery().trim().toLowerCase();
@@ -44167,6 +44294,26 @@ var AdminComponent = class _AdminComponent {
       error: () => this.error.set("Controlla i campi e carica almeno una foto.")
     });
   }
+  saveHeroSettings() {
+    if (!this.homeHeroFile && !this.catalogHeroFile)
+      return;
+    this.error.set("");
+    this.status.set("");
+    const data = new FormData();
+    if (this.homeHeroFile)
+      data.set("homeHeroImage", this.homeHeroFile);
+    if (this.catalogHeroFile)
+      data.set("catalogHeroImage", this.catalogHeroFile);
+    this.admin.updateSiteSettings(data).subscribe({
+      next: (settings) => {
+        this.siteSettings.set(settings);
+        this.homeHeroFile = null;
+        this.catalogHeroFile = null;
+        this.status.set("Sfondi aggiornati.");
+      },
+      error: () => this.error.set("Non e stato possibile aggiornare gli sfondi.")
+    });
+  }
   remove(item) {
     if (!confirm(`Eliminare "${item.name}" dal catalogo?`))
       return;
@@ -44180,6 +44327,12 @@ var AdminComponent = class _AdminComponent {
     this.editingId.set(null);
     this.files = [];
     this.form = emptyFurnitureForm();
+  }
+  fallbackCatalogImage() {
+    return this.furniture().find((item) => item.images.length > 0)?.images[0] ?? "/assets/hero-la-casa-nelle-rose.png";
+  }
+  hasHeroChanges() {
+    return Boolean(this.homeHeroFile || this.catalogHeroFile);
   }
   toFormData() {
     const data = new FormData();
@@ -44200,21 +44353,208 @@ var AdminComponent = class _AdminComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AdminComponent, selectors: [["app-admin"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 3, vars: 1, consts: [[1, "admin-page"], [1, "admin-login"], [1, "admin-shell"], [1, "eyebrow"], ["type", "button", 1, "primary", 3, "click"], [1, "admin-header"], ["type", "button", 1, "secondary", 3, "click"], [3, "stats", "furnitureCount"], [1, "admin-workspace"], [3, "filesSelected", "removeExistingImage", "save", "cancel", "form", "editingId", "error", "status", "selectedFiles"], [1, "admin-catalog-panel"], [3, "queryChange", "query"], [3, "edit", "remove", "furniture"]], template: function AdminComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AdminComponent, selectors: [["app-admin"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 3, vars: 1, consts: [[1, "admin-page"], [1, "admin-login"], [1, "admin-shell"], [1, "eyebrow"], ["type", "button", 1, "primary", 3, "click"], [1, "admin-header"], ["type", "button", 1, "secondary", 3, "click"], [3, "stats", "furnitureCount"], [3, "homeSelected", "catalogSelected", "save", "settings", "fallbackCatalogImage", "hasChanges"], [1, "admin-workspace"], [3, "filesSelected", "removeExistingImage", "save", "cancel", "form", "editingId", "error", "status", "selectedFiles"], [1, "admin-catalog-panel"], [3, "queryChange", "query"], [3, "edit", "remove", "furniture"]], template: function AdminComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "main", 0);
-        \u0275\u0275template(1, AdminComponent_Conditional_1_Template, 7, 0, "section", 1)(2, AdminComponent_Conditional_2_Template, 15, 9, "section", 2);
+        \u0275\u0275template(1, AdminComponent_Conditional_1_Template, 7, 0, "section", 1)(2, AdminComponent_Conditional_2_Template, 16, 12, "section", 2);
         \u0275\u0275elementEnd();
       }
       if (rf & 2) {
         \u0275\u0275advance();
         \u0275\u0275conditional(!ctx.admin.isLoggedIn() ? 1 : 2);
       }
-    }, dependencies: [AdminStatsComponent, AdminSearchComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent], encapsulation: 2 });
+    }, dependencies: [AdminStatsComponent, AdminSearchComponent, AdminHeroSettingsComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent], encapsulation: 2 });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AdminComponent, { className: "AdminComponent", filePath: "src/app/features/admin/admin.component.ts", lineNumber: 63 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AdminComponent, { className: "AdminComponent", filePath: "src/app/features/admin/admin.component.ts", lineNumber: 73 });
+})();
+
+// src/app/features/realizations/realizations.component.ts
+var _forTrack07 = ($index, $item) => $item.name;
+var _forTrack13 = ($index, $item) => $item.id;
+function RealizationsComponent_For_10_For_10_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "article", 6)(1, "button", 7);
+    \u0275\u0275listener("click", function RealizationsComponent_For_10_For_10_Template_button_click_1_listener() {
+      const item_r2 = \u0275\u0275restoreView(_r1).$implicit;
+      const ctx_r2 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r2.toggle(item_r2.id));
+    });
+    \u0275\u0275element(2, "img", 8);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(3, "div", 9)(4, "p", 2);
+    \u0275\u0275text(5);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "h3");
+    \u0275\u0275text(7);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(8, "p");
+    \u0275\u0275text(9);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(10, "footer")(11, "span");
+    \u0275\u0275text(12);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(13, "button", 10);
+    \u0275\u0275listener("click", function RealizationsComponent_For_10_For_10_Template_button_click_13_listener() {
+      const item_r2 = \u0275\u0275restoreView(_r1).$implicit;
+      const ctx_r2 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r2.toggle(item_r2.id));
+    });
+    \u0275\u0275text(14);
+    \u0275\u0275elementEnd()()()();
+  }
+  if (rf & 2) {
+    const item_r2 = ctx.$implicit;
+    const ctx_r2 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275property("src", ctx_r2.isAfter(item_r2.id) ? item_r2.after : item_r2.before, \u0275\u0275sanitizeUrl)("alt", ctx_r2.imageAlt(item_r2));
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(ctx_r2.isAfter(item_r2.id) ? "Dopo" : "Prima");
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(item_r2.room);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(item_r2.note);
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(item_r2.place);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" Vedi ", ctx_r2.isAfter(item_r2.id) ? "prima" : "dopo", " ");
+  }
+}
+function RealizationsComponent_For_10_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "section", 4)(1, "header")(2, "p", 2);
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "h2");
+    \u0275\u0275text(5);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "p");
+    \u0275\u0275text(7);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(8, "div", 5);
+    \u0275\u0275repeaterCreate(9, RealizationsComponent_For_10_For_10_Template, 15, 7, "article", 6, _forTrack13);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const house_r4 = ctx.$implicit;
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(house_r4.place);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(house_r4.name);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(house_r4.description);
+    \u0275\u0275advance(2);
+    \u0275\u0275repeater(house_r4.rooms);
+  }
+}
+var RealizationsComponent = class _RealizationsComponent {
+  constructor() {
+    this.activeAfter = signal({});
+    this.houses = [
+      {
+        name: "Villa Rose",
+        place: "Casa indipendente, colline fiorentine",
+        description: "Un intervento pensato per dare continuita alla zona giorno, usando mobili chiari, tessuti naturali e pezzi francesi con patina vissuta.",
+        rooms: [
+          {
+            id: "villa-rose-soggiorno",
+            room: "Soggiorno",
+            place: "Zona giorno",
+            before: "/assets/realizzazioni/soggiorno-prima.png",
+            after: "/assets/realizzazioni/soggiorno-dopo.png",
+            note: "Un ambiente spoglio e poco definito trasformato con divano in lino, specchiera antica e mobili chiari di gusto provenzale."
+          },
+          {
+            id: "villa-rose-pranzo",
+            room: "Sala da pranzo",
+            place: "Zona pranzo",
+            before: "/assets/realizzazioni/pranzo-prima.png",
+            after: "/assets/realizzazioni/pranzo-dopo.png",
+            note: "La stessa casa prosegue nella sala da pranzo con tavolo antico, sedute leggere e una credenza grigio perla."
+          }
+        ]
+      },
+      {
+        name: "Maison Claire",
+        place: "Terratetto, centro storico",
+        description: "Una casa compatta, resa piu luminosa attraverso arredi proporzionati, sedute leggere e superfici in bianco e grigio perla.",
+        rooms: [
+          {
+            id: "maison-claire-camera",
+            room: "Camera ospiti",
+            place: "Zona notte",
+            before: "/assets/realizzazioni/camera-prima.png",
+            after: "/assets/realizzazioni/camera-dopo.png",
+            note: "La stanza ospiti viene resa piu morbida con legni chiari, tessili naturali e piccoli complementi francesi."
+          }
+        ]
+      },
+      {
+        name: "Casa del Cortile",
+        place: "Appartamento, piano nobile",
+        description: "Un progetto piu intimo, dove la camera viene ammorbidita con legni decapati, lino e piccoli dettagli decorativi.",
+        rooms: [
+          {
+            id: "casa-del-cortile-camera",
+            room: "Camera matrimoniale",
+            place: "Zona notte",
+            before: "/assets/realizzazioni/camera-prima.png",
+            after: "/assets/realizzazioni/camera-dopo.png",
+            note: "Una camera essenziale diventa piu morbida e raccolta con armadio decapato, tessili naturali e comodini scolpiti."
+          },
+          {
+            id: "casa-del-cortile-soggiorno",
+            room: "Piccolo soggiorno",
+            place: "Zona lettura",
+            before: "/assets/realizzazioni/soggiorno-prima.png",
+            after: "/assets/realizzazioni/soggiorno-dopo.png",
+            note: "Un angolo lettura viene armonizzato con specchiera, sedute chiare e oggetti scelti per legare la stanza al resto della casa."
+          }
+        ]
+      }
+    ];
+  }
+  toggle(id) {
+    this.activeAfter.update((current) => __spreadProps(__spreadValues({}, current), { [id]: !current[id] }));
+  }
+  isAfter(id) {
+    return Boolean(this.activeAfter()[id]);
+  }
+  imageAlt(item) {
+    return `${item.room} ${this.isAfter(item.id) ? "dopo" : "prima"} il restyling`;
+  }
+  static {
+    this.\u0275fac = function RealizationsComponent_Factory(__ngFactoryType__) {
+      return new (__ngFactoryType__ || _RealizationsComponent)();
+    };
+  }
+  static {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RealizationsComponent, selectors: [["app-realizations"]], standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 11, vars: 0, consts: [[1, "realizations-page"], [1, "realizations-hero"], [1, "eyebrow"], ["aria-label", "Realizzazioni per casa", 1, "realizations-list"], [1, "realization-house"], [1, "house-room-list"], [1, "realization-card"], ["type", "button", 1, "realization-image", 3, "click"], [3, "src", "alt"], [1, "realization-copy"], ["type", "button", 1, "link-button", 3, "click"]], template: function RealizationsComponent_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "main", 0)(1, "section", 1)(2, "p", 2);
+        \u0275\u0275text(3, "Prima e dopo");
+        \u0275\u0275elementEnd();
+        \u0275\u0275elementStart(4, "h1");
+        \u0275\u0275text(5, "Restyling di interni");
+        \u0275\u0275elementEnd();
+        \u0275\u0275elementStart(6, "p");
+        \u0275\u0275text(7, " Stanze ripensate con mobili francesi, tessuti naturali, pezzi decapati e dettagli scelti per dare continuita alla casa. ");
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(8, "section", 3);
+        \u0275\u0275repeaterCreate(9, RealizationsComponent_For_10_Template, 11, 3, "section", 4, _forTrack07);
+        \u0275\u0275elementEnd()();
+      }
+      if (rf & 2) {
+        \u0275\u0275advance(9);
+        \u0275\u0275repeater(ctx.houses);
+      }
+    }, encapsulation: 2 });
+  }
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(RealizationsComponent, { className: "RealizationsComponent", filePath: "src/app/features/realizations/realizations.component.ts", lineNumber: 68 });
 })();
 
 // src/app/core/auth.guard.ts
@@ -44228,6 +44568,7 @@ var authGuard = () => {
 var routes = [
   { path: "", component: CatalogComponent },
   { path: "catalogo", component: CatalogComponent },
+  { path: "realizzazioni", component: RealizationsComponent },
   { path: "login", component: AuthComponent },
   { path: "login/admin-panel", component: AdminComponent },
   { path: "area-personale", component: AccountComponent, canActivate: [authGuard] },

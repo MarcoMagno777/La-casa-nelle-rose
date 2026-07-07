@@ -69,6 +69,61 @@ $storeUploadedImages = static function (array $uploadedFiles): array {
     return $images;
 };
 
+$storeUploadedImage = static function (array $uploadedFiles, string $key): ?string {
+    $targetDir = __DIR__ . '/uploads';
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0775, true);
+    }
+
+    $file = $uploadedFiles[$key] ?? null;
+    if (!$file || is_array($file) || $file->getError() !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
+    $mediaType = $file->getClientMediaType();
+    $extension = match ($mediaType) {
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+        default => null,
+    };
+    if (!$extension) return null;
+
+    $filename = 'hero-' . $key . '-' . bin2hex(random_bytes(10)) . '.' . $extension;
+    $file->moveTo($targetDir . '/' . $filename);
+    return '/uploads/' . $filename;
+};
+
+$settingsPath = static fn (): string => __DIR__ . '/uploads/site-settings.json';
+
+$defaultSiteSettings = static fn (): array => [
+    'homeHeroImage' => '/assets/hero-la-casa-nelle-rose.png',
+    'catalogHeroImage' => '',
+];
+
+$readSiteSettings = static function () use ($settingsPath, $defaultSiteSettings): array {
+    $settings = $defaultSiteSettings();
+    $path = $settingsPath();
+    if (!is_file($path)) return $settings;
+
+    $stored = json_decode((string) file_get_contents($path), true);
+    if (!is_array($stored)) return $settings;
+
+    return [
+        'homeHeroImage' => is_string($stored['homeHeroImage'] ?? null) && $stored['homeHeroImage'] !== '' ? $stored['homeHeroImage'] : $settings['homeHeroImage'],
+        'catalogHeroImage' => is_string($stored['catalogHeroImage'] ?? null) ? $stored['catalogHeroImage'] : $settings['catalogHeroImage'],
+    ];
+};
+
+$writeSiteSettings = static function (array $settings) use ($settingsPath): void {
+    $path = $settingsPath();
+    $dir = dirname($path);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($path, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+};
+
 $furniturePayload = static function (Request $request): array {
     $data = (array) $request->getParsedBody();
     return [
@@ -162,6 +217,30 @@ $app->post('/api/admin/login', function (Request $request, Response $response) u
     }
 
     return $json($response, ['token' => Auth::adminTokenFor($adminUsername), 'username' => $adminUsername]);
+});
+
+$app->get('/api/site-settings', function (Request $request, Response $response) use ($json, $readSiteSettings) {
+    return $json($response, $readSiteSettings());
+});
+
+$app->post('/api/admin/site-settings', function (Request $request, Response $response) use ($json, $requireAdmin, $readSiteSettings, $writeSiteSettings, $storeUploadedImage) {
+    $admin = $requireAdmin($request, $response);
+    if ($admin instanceof Response) return $admin;
+
+    $settings = $readSiteSettings();
+    $uploadedFiles = $request->getUploadedFiles();
+    $homeHeroImage = $storeUploadedImage($uploadedFiles, 'homeHeroImage');
+    $catalogHeroImage = $storeUploadedImage($uploadedFiles, 'catalogHeroImage');
+
+    if ($homeHeroImage) {
+        $settings['homeHeroImage'] = $homeHeroImage;
+    }
+    if ($catalogHeroImage) {
+        $settings['catalogHeroImage'] = $catalogHeroImage;
+    }
+
+    $writeSiteSettings($settings);
+    return $json($response, $settings);
 });
 
 $app->get('/api/admin/stats', function (Request $request, Response $response) use ($json, $requireAdmin) {

@@ -2,9 +2,10 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdminStats } from '../../core/admin.models';
-import { Furniture } from '../../core/models';
+import { Furniture, SiteSettings } from '../../core/models';
 import { AdminFurnitureFormComponent } from './admin-furniture-form.component';
 import { AdminFurnitureListComponent } from './admin-furniture-list.component';
+import { AdminHeroSettingsComponent } from './admin-hero-settings.component';
 import { emptyFurnitureForm, FurnitureForm } from './admin.models';
 import { AdminSearchComponent } from './admin-search.component';
 import { AdminService } from './admin.service';
@@ -13,7 +14,7 @@ import { AdminStatsComponent } from './admin-stats.component';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [AdminStatsComponent, AdminSearchComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent],
+  imports: [AdminStatsComponent, AdminSearchComponent, AdminHeroSettingsComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent],
   template: `
     <main class="admin-page">
       @if (!admin.isLoggedIn()) {
@@ -33,6 +34,15 @@ import { AdminStatsComponent } from './admin-stats.component';
           </header>
 
           <app-admin-stats [stats]="stats()" [furnitureCount]="furniture().length" />
+
+          <app-admin-hero-settings
+            [settings]="siteSettings()"
+            [fallbackCatalogImage]="fallbackCatalogImage()"
+            [hasChanges]="hasHeroChanges()"
+            (homeSelected)="homeHeroFile = $event"
+            (catalogSelected)="catalogHeroFile = $event"
+            (save)="saveHeroSettings()"
+          />
 
           <section class="admin-workspace">
             <app-admin-furniture-form
@@ -65,11 +75,14 @@ export class AdminComponent implements OnInit {
   private readonly router = inject(Router);
   readonly stats = signal<AdminStats | null>(null);
   readonly furniture = signal<Furniture[]>([]);
+  readonly siteSettings = signal<SiteSettings | null>(null);
   readonly searchQuery = signal('');
   readonly editingId = signal<number | null>(null);
   readonly error = signal('');
   readonly status = signal('');
   files: File[] = [];
+  homeHeroFile: File | null = null;
+  catalogHeroFile: File | null = null;
   form: FurnitureForm = emptyFurnitureForm();
 
   ngOnInit(): void {
@@ -89,6 +102,7 @@ export class AdminComponent implements OnInit {
   load(): void {
     this.admin.stats().subscribe((stats) => this.stats.set(stats));
     this.admin.furniture().subscribe((items) => this.furniture.set(items));
+    this.admin.siteSettings().subscribe((settings) => this.siteSettings.set(settings));
   }
 
   filteredFurniture(): Furniture[] {
@@ -138,6 +152,26 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  saveHeroSettings(): void {
+    if (!this.homeHeroFile && !this.catalogHeroFile) return;
+
+    this.error.set('');
+    this.status.set('');
+    const data = new FormData();
+    if (this.homeHeroFile) data.set('homeHeroImage', this.homeHeroFile);
+    if (this.catalogHeroFile) data.set('catalogHeroImage', this.catalogHeroFile);
+
+    this.admin.updateSiteSettings(data).subscribe({
+      next: (settings) => {
+        this.siteSettings.set(settings);
+        this.homeHeroFile = null;
+        this.catalogHeroFile = null;
+        this.status.set('Sfondi aggiornati.');
+      },
+      error: () => this.error.set('Non e stato possibile aggiornare gli sfondi.')
+    });
+  }
+
   remove(item: Furniture): void {
     if (!confirm(`Eliminare "${item.name}" dal catalogo?`)) return;
     this.admin.deleteFurniture(item.id).subscribe(() => {
@@ -150,6 +184,14 @@ export class AdminComponent implements OnInit {
     this.editingId.set(null);
     this.files = [];
     this.form = emptyFurnitureForm();
+  }
+
+  fallbackCatalogImage(): string {
+    return this.furniture().find((item) => item.images.length > 0)?.images[0] ?? '/assets/hero-la-casa-nelle-rose.png';
+  }
+
+  hasHeroChanges(): boolean {
+    return Boolean(this.homeHeroFile || this.catalogHeroFile);
   }
 
   private toFormData(): FormData {

@@ -6,7 +6,9 @@
   --accent: #2c2c2a;
   --accent-soft: #ebe8e1;
   --white: #ffffff;
-  font-family: Quicksand, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif: "Libre Baskerville", Baskerville, "Baskerville Old Face", "Times New Roman", serif;
+  --sans: Quicksand, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--sans);
   color: var(--ink);
   background: var(--paper);
 }
@@ -32,7 +34,7 @@ h1,
 h2,
 h3,
 .brand strong {
-  font-family: Adamina, Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-weight: 400;
   letter-spacing: 0;
 }
@@ -77,38 +79,34 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(1rem, 3vw, 3rem);
-  padding: .9rem clamp(1rem, 4vw, 3rem);
+  gap: clamp(1rem, 3vw, 3.5rem);
+  padding: .75rem clamp(1rem, 4vw, 3rem);
   border-bottom: 1px solid var(--line);
   background: rgba(255, 255, 255, .94);
   backdrop-filter: blur(12px);
 }
 
 .brand {
-  display: inline-grid;
-  grid-template-columns: 2.75rem minmax(0, auto);
-  gap: .7rem;
+  display: inline-flex;
+  gap: clamp(.7rem, 1.6vw, 1.2rem);
   align-items: center;
-  min-width: 14rem;
+  min-width: min(46vw, 34rem);
 }
 
 .brand img {
-  width: 2.75rem;
-  height: 2.75rem;
+  flex: 0 0 auto;
+  width: clamp(2.5rem, 4vw, 3.7rem);
+  height: clamp(2.5rem, 4vw, 3.7rem);
   border-radius: 50%;
   object-fit: cover;
 }
 
-.brand span {
-  display: grid;
-  gap: .1rem;
-}
-
 .brand strong {
-  font-family: Adamina, Georgia, "Times New Roman", serif;
-  font-size: 1.25rem;
+  font-family: var(--serif);
+  font-size: clamp(1.55rem, 3.4vw, 4.15rem);
   font-weight: 400;
-  line-height: 1;
+  line-height: .95;
+  white-space: nowrap;
 }
 
 .brand small,
@@ -152,23 +150,38 @@ main {
 }
 
 .hero {
-  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(18rem, .7fr);
-  min-height: clamp(30rem, 76vh, 48rem);
-  gap: clamp(2rem, 5vw, 6rem);
-  align-items: end;
-  overflow: hidden;
-  padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, .85fr);
+  gap: clamp(1.5rem, 4vw, 5rem);
+  align-items: center;
+  padding: clamp(1.2rem, 4vw, 3rem);
   border-bottom: 1px solid var(--line);
-  background:
-    linear-gradient(90deg, rgba(244, 243, 239, .96), rgba(244, 243, 239, .5)),
-    url("/assets/hero-la-casa-nelle-rose.png") center/cover;
+  background: var(--paper);
 }
 
 .catalog-hero {
   grid-template-columns: minmax(0, 1fr);
   background: var(--paper);
+}
+
+.hero-visual {
+  position: relative;
+  min-height: clamp(21rem, 58vw, 44rem);
+  overflow: hidden;
+  background:
+    url("/assets/hero-la-casa-nelle-rose.png") center/cover,
+    var(--accent-soft);
+  background-position: center;
+  background-size: cover;
+}
+
+.catalog-hero .hero-visual {
+  min-height: clamp(19rem, 42vw, 36rem);
+}
+
+.custom-catalog-hero {
+  background-position: center;
+  background-size: cover;
 }
 
 .hero-product-backdrop {
@@ -179,13 +192,6 @@ main {
   gap: 0;
 }
 
-.hero-product-backdrop::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: linear-gradient(90deg, rgba(244, 243, 239, .96) 0%, rgba(244, 243, 239, .76) 42%, rgba(244, 243, 239, .2) 100%);
-}
-
 .hero-product-backdrop img {
   width: 100%;
   height: 100%;
@@ -194,9 +200,17 @@ main {
 }
 
 .hero-copy {
-  position: relative;
-  z-index: 1;
   max-width: 64rem;
+}
+
+.hero-content {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.catalog-hero .hero-content {
+  max-width: 58rem;
+  padding: 0 0 clamp(1rem, 2vw, 2rem);
 }
 
 .hero-copy p:last-child {
@@ -220,7 +234,7 @@ main {
 .hero-panel strong {
   display: block;
   margin: .2rem 0 .8rem;
-  font-family: Adamina, Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-size: 2rem;
   font-weight: 400;
 }
@@ -317,7 +331,7 @@ main {
 }
 
 .home-category-card strong {
-  font-family: Adamina, Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-size: clamp(1.35rem, 2.5vw, 2.2rem);
   font-weight: 400;
   line-height: 1;
@@ -514,13 +528,143 @@ app-furniture-card {
   font-size: .92rem;
 }
 
+.realizations-page {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.realizations-hero {
+  display: grid;
+  gap: 1rem;
+  min-height: clamp(20rem, 46vh, 34rem);
+  align-content: end;
+  padding: clamp(5rem, 9vw, 8rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(244, 243, 239, .98), rgba(244, 243, 239, .64)),
+    url("/assets/realizzazioni/soggiorno-dopo.png") center/cover;
+}
+
+.realizations-hero h1 {
+  max-width: 55rem;
+}
+
+.realizations-hero p:last-child {
+  max-width: 42rem;
+  color: #4a4945;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+}
+
+.realizations-list {
+  display: grid;
+  gap: clamp(3rem, 7vw, 7rem);
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.realization-house {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 4vw, 3rem);
+  border-top: 1px solid var(--line);
+}
+
+.realization-house > header {
+  display: grid;
+  gap: .8rem;
+  max-width: 52rem;
+}
+
+.realization-house > header h2 {
+  font-size: clamp(2.5rem, 6vw, 6rem);
+}
+
+.realization-house > header p:not(.eyebrow) {
+  margin: 0;
+  color: #55534d;
+}
+
+.house-room-list {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.realization-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, .65fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: end;
+}
+
+.realization-card:nth-child(even) {
+  grid-template-columns: minmax(18rem, .65fr) minmax(0, 1.35fr);
+}
+
+.realization-card:nth-child(even) .realization-image {
+  order: 2;
+}
+
+.realization-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 0;
+  background: var(--accent-soft);
+  cursor: pointer;
+  padding: 0;
+}
+
+.realization-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform .45s ease;
+}
+
+.realization-image:hover img {
+  transform: scale(1.02);
+}
+
+.realization-copy {
+  display: grid;
+  gap: .85rem;
+  padding-bottom: .5rem;
+}
+
+.realization-copy h3 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.8rem);
+}
+
+.realization-copy p:not(.eyebrow) {
+  max-width: 34rem;
+  margin: 0;
+  color: #55534d;
+}
+
+.realization-copy footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .82rem;
+}
+
 .site-footer p {
   margin: .2rem 0;
 }
 
 .footer-brand {
   color: var(--ink);
-  font-family: Adamina, Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-size: 1.25rem;
 }
 
@@ -608,7 +752,7 @@ app-furniture-card {
 
 .detail-copy dd {
   margin: .25rem 0 0;
-  font-family: Adamina, Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-size: 1.35rem;
 }
 
@@ -687,7 +831,7 @@ app-furniture-card {
 .admin-stats strong {
   display: block;
   margin-top: .45rem;
-  font-family: Adamina, Georgia, "Times New Roman", serif;
+  font-family: var(--serif);
   font-size: 2rem;
   font-weight: 400;
 }
@@ -703,6 +847,35 @@ app-furniture-card {
   grid-template-columns: minmax(20rem, .85fr) minmax(0, 1.15fr);
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: start;
+}
+
+.admin-hero-settings {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 0 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-hero-settings h2 {
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+.hero-setting-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.hero-setting-grid label {
+  display: grid;
+  gap: .7rem;
+}
+
+.hero-setting-grid img {
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  object-fit: cover;
+  background: var(--accent-soft);
 }
 
 .admin-catalog-panel {
@@ -963,6 +1136,15 @@ form {
     gap: .8rem;
   }
 
+  .brand {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .brand strong {
+    white-space: normal;
+  }
+
   nav {
     justify-content: flex-start;
   }
@@ -978,8 +1160,14 @@ form {
   .category-grid,
   .home-category-grid,
   .catalog-grid.compact,
-  .product-detail {
+  .product-detail,
+  .realization-card,
+  .realization-card:nth-child(even) {
     grid-template-columns: 1fr;
+  }
+
+  .realization-card:nth-child(even) .realization-image {
+    order: 0;
   }
 
   .home-category-card:first-child,
@@ -1010,7 +1198,8 @@ form {
   }
 
   .admin-stats,
-  .admin-workspace {
+  .admin-workspace,
+  .hero-setting-grid {
     grid-template-columns: 1fr;
   }
 

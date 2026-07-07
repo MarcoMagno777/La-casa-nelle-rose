@@ -15,6 +15,11 @@ export interface User {
   email: string;
 }
 
+export interface SiteSettings {
+  homeHeroImage: string;
+  catalogHeroImage: string;
+}
+
 export interface AuthResponse {
   token: string;
   user: User;

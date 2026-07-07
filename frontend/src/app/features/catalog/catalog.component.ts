@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
-import { Furniture } from '../../core/models';
+import { Furniture, SiteSettings } from '../../core/models';
 import { CatalogGridComponent } from './catalog-grid.component';
 import { CatalogHeroComponent } from './catalog-hero.component';
 import { CatalogToolbarComponent } from './catalog-toolbar.component';
@@ -16,7 +16,12 @@ import { ProductDetailComponent } from './product-detail.component';
   imports: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeCategoriesComponent, HomeSearchComponent, ProductDetailComponent],
   template: `
     <main>
-      <app-catalog-hero [isCatalogPage]="isCatalogPage()" [heroProducts]="heroProducts()" />
+      <app-catalog-hero
+        [isCatalogPage]="isCatalogPage()"
+        [heroProducts]="heroProducts()"
+        [homeHeroImage]="siteSettings()?.homeHeroImage ?? ''"
+        [catalogHeroImage]="siteSettings()?.catalogHeroImage ?? ''"
+      />
 
       @if (selectedFurniture(); as item) {
         <app-product-detail [item]="item" (liked)="toggleLike($event)" (closed)="closeProduct()" />
@@ -46,6 +51,7 @@ export class CatalogComponent implements OnInit {
   private readonly router = inject(Router);
   readonly furniture = signal<Furniture[]>([]);
   readonly heroProducts = signal<Furniture[]>([]);
+  readonly siteSettings = signal<SiteSettings | null>(null);
   readonly selectedFurniture = signal<Furniture | null>(null);
   readonly categories = signal<string[]>([]);
   readonly categoryPreviews = signal<Array<{ category: string; image: string; count: number }>>([]);
@@ -53,6 +59,7 @@ export class CatalogComponent implements OnInit {
   category = '';
 
   ngOnInit(): void {
+    this.loadSiteSettings();
     this.loadCategories();
     if (this.isCatalogPage()) {
       this.load();
@@ -60,6 +67,10 @@ export class CatalogComponent implements OnInit {
     }
 
     this.loadHeroProducts();
+  }
+
+  loadSiteSettings(): void {
+    this.api.getSiteSettings().subscribe((settings) => this.siteSettings.set(settings));
   }
 
   loadCategories(): void {
