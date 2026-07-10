@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdminStats } from './admin.models';
-import { AuthResponse, Furniture, SiteSettings, User } from './models';
+import { AuthResponse, Furniture, RealizationHouse, SiteSettings, User } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -22,6 +22,10 @@ export class ApiService {
 
   getSiteSettings(): Observable<SiteSettings> {
     return this.http.get<SiteSettings>(`${this.baseUrl}/site-settings`);
+  }
+
+  getRealizations(): Observable<RealizationHouse[]> {
+    return this.http.get<RealizationHouse[]>(`${this.baseUrl}/realizations`);
   }
 
   getFavorites(): Observable<Furniture[]> {
@@ -82,5 +86,13 @@ export class ApiService {
 
   updateSiteSettings(data: FormData): Observable<SiteSettings> {
     return this.http.post<SiteSettings>(`${this.baseUrl}/admin/site-settings`, data);
+  }
+
+  createRealization(data: FormData): Observable<RealizationHouse[]> {
+    return this.http.post<RealizationHouse[]>(`${this.baseUrl}/admin/realizations`, data);
+  }
+
+  deleteRealization(roomId: string): Observable<RealizationHouse[]> {
+    return this.http.delete<RealizationHouse[]>(`${this.baseUrl}/admin/realizations/${roomId}`);
   }
 }

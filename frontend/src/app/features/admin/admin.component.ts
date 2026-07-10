@@ -2,10 +2,11 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdminStats } from '../../core/admin.models';
-import { Furniture, SiteSettings } from '../../core/models';
+import { Furniture, RealizationHouse, SiteSettings } from '../../core/models';
 import { AdminFurnitureFormComponent } from './admin-furniture-form.component';
 import { AdminFurnitureListComponent } from './admin-furniture-list.component';
 import { AdminHeroSettingsComponent } from './admin-hero-settings.component';
+import { AdminRealizationsComponent, emptyRealizationForm, RealizationForm } from './admin-realizations.component';
 import { emptyFurnitureForm, FurnitureForm } from './admin.models';
 import { AdminSearchComponent } from './admin-search.component';
 import { AdminService } from './admin.service';
@@ -14,7 +15,7 @@ import { AdminStatsComponent } from './admin-stats.component';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [AdminStatsComponent, AdminSearchComponent, AdminHeroSettingsComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent],
+  imports: [AdminStatsComponent, AdminSearchComponent, AdminHeroSettingsComponent, AdminRealizationsComponent, AdminFurnitureFormComponent, AdminFurnitureListComponent],
   template: `
     <main class="admin-page">
       @if (!admin.isLoggedIn()) {
@@ -42,6 +43,15 @@ import { AdminStatsComponent } from './admin-stats.component';
             (homeSelected)="homeHeroFile = $event"
             (catalogSelected)="catalogHeroFile = $event"
             (save)="saveHeroSettings()"
+          />
+
+          <app-admin-realizations
+            [form]="realizationForm"
+            [houses]="realizations()"
+            (beforeSelected)="beforeRealizationFile = $event"
+            (afterSelected)="afterRealizationFile = $event"
+            (save)="saveRealization()"
+            (remove)="removeRealization($event)"
           />
 
           <section class="admin-workspace">
@@ -76,6 +86,7 @@ export class AdminComponent implements OnInit {
   readonly stats = signal<AdminStats | null>(null);
   readonly furniture = signal<Furniture[]>([]);
   readonly siteSettings = signal<SiteSettings | null>(null);
+  readonly realizations = signal<RealizationHouse[]>([]);
   readonly searchQuery = signal('');
   readonly editingId = signal<number | null>(null);
   readonly error = signal('');
@@ -83,7 +94,10 @@ export class AdminComponent implements OnInit {
   files: File[] = [];
   homeHeroFile: File | null = null;
   catalogHeroFile: File | null = null;
+  beforeRealizationFile: File | null = null;
+  afterRealizationFile: File | null = null;
   form: FurnitureForm = emptyFurnitureForm();
+  realizationForm: RealizationForm = emptyRealizationForm();
 
   ngOnInit(): void {
     if (this.admin.isLoggedIn()) this.load();
@@ -103,6 +117,7 @@ export class AdminComponent implements OnInit {
     this.admin.stats().subscribe((stats) => this.stats.set(stats));
     this.admin.furniture().subscribe((items) => this.furniture.set(items));
     this.admin.siteSettings().subscribe((settings) => this.siteSettings.set(settings));
+    this.admin.realizations().subscribe((items) => this.realizations.set(items));
   }
 
   filteredFurniture(): Furniture[] {
@@ -121,9 +136,7 @@ export class AdminComponent implements OnInit {
     this.form = {
       name: item.name,
       description: item.description,
-      placement: item.placement,
       category: item.category,
-      period: item.period,
       existingImages: [...item.images],
     };
     this.status.set('');
@@ -172,6 +185,44 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  saveRealization(): void {
+    this.error.set('');
+    this.status.set('');
+    if (!this.beforeRealizationFile || !this.afterRealizationFile) {
+      this.error.set('Carica la foto prima e la foto dopo.');
+      return;
+    }
+
+    const data = new FormData();
+    data.set('houseName', this.realizationForm.houseName);
+    data.set('housePlace', this.realizationForm.housePlace);
+    data.set('houseDescription', this.realizationForm.houseDescription);
+    data.set('room', this.realizationForm.room);
+    data.set('roomPlace', this.realizationForm.roomPlace);
+    data.set('note', this.realizationForm.note);
+    data.set('beforeImage', this.beforeRealizationFile);
+    data.set('afterImage', this.afterRealizationFile);
+
+    this.admin.createRealization(data).subscribe({
+      next: (items) => {
+        this.realizations.set(items);
+        this.realizationForm = emptyRealizationForm();
+        this.beforeRealizationFile = null;
+        this.afterRealizationFile = null;
+        this.status.set('Realizzazione aggiunta.');
+      },
+      error: () => this.error.set('Controlla i campi della realizzazione.')
+    });
+  }
+
+  removeRealization(roomId: string): void {
+    if (!confirm('Eliminare questa realizzazione?')) return;
+    this.admin.deleteRealization(roomId).subscribe((items) => {
+      this.realizations.set(items);
+      this.status.set('Realizzazione eliminata.');
+    });
+  }
+
   remove(item: Furniture): void {
     if (!confirm(`Eliminare "${item.name}" dal catalogo?`)) return;
     this.admin.deleteFurniture(item.id).subscribe(() => {
@@ -198,9 +249,9 @@ export class AdminComponent implements OnInit {
     const data = new FormData();
     data.set('name', this.form.name);
     data.set('description', this.form.description);
-    data.set('placement', this.form.placement);
+    data.set('placement', '');
     data.set('category', this.form.category);
-    data.set('period', this.form.period);
+    data.set('period', '');
     data.set('existingImages', JSON.stringify(this.form.existingImages));
     for (const file of this.files) {
       data.append('images[]', file);

@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Furniture, SiteSettings } from '../../core/models';
@@ -7,13 +7,14 @@ import { CatalogGridComponent } from './catalog-grid.component';
 import { CatalogHeroComponent } from './catalog-hero.component';
 import { CatalogToolbarComponent } from './catalog-toolbar.component';
 import { HomeCategoriesComponent } from './home-categories.component';
+import { HomeRealizationsComponent } from './home-realizations.component';
 import { HomeSearchComponent } from './home-search.component';
 import { ProductDetailComponent } from './product-detail.component';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeCategoriesComponent, HomeSearchComponent, ProductDetailComponent],
+  imports: [CatalogHeroComponent, CatalogToolbarComponent, CatalogGridComponent, HomeCategoriesComponent, HomeRealizationsComponent, HomeSearchComponent, ProductDetailComponent],
   template: `
     <main>
       <app-catalog-hero
@@ -37,6 +38,7 @@ import { ProductDetailComponent } from './product-detail.component';
         } @else {
           <app-home-search [query]="query" (queryChange)="changeQuery($event)" />
           <app-home-categories [categories]="categoryPreviews()" (selected)="selectHomeCategory($event)" />
+          <app-home-realizations />
         }
         @if (shouldShowProducts()) {
           <app-catalog-grid [furniture]="furniture()" (liked)="toggleLike($event)" (selected)="openProduct($event)" />
@@ -49,6 +51,7 @@ export class CatalogComponent implements OnInit {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   readonly furniture = signal<Furniture[]>([]);
   readonly heroProducts = signal<Furniture[]>([]);
   readonly siteSettings = signal<SiteSettings | null>(null);
@@ -62,7 +65,11 @@ export class CatalogComponent implements OnInit {
     this.loadSiteSettings();
     this.loadCategories();
     if (this.isCatalogPage()) {
-      this.load();
+      this.route.queryParamMap.subscribe((params) => {
+        this.category = params.get('category') ?? '';
+        this.query = params.get('q') ?? '';
+        this.load();
+      });
       return;
     }
 
@@ -111,10 +118,7 @@ export class CatalogComponent implements OnInit {
   }
 
   selectHomeCategory(category: string): void {
-    this.category = category;
-    this.query = '';
-    this.load();
-    setTimeout(() => document.querySelector('.catalog-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    this.router.navigate(['/catalogo'], { queryParams: { category } });
   }
 
   toggleLike(item: Furniture): void {

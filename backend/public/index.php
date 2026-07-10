@@ -124,6 +124,89 @@ $writeSiteSettings = static function (array $settings) use ($settingsPath): void
     file_put_contents($path, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 };
 
+$realizationsPath = static fn (): string => __DIR__ . '/uploads/realizations.json';
+
+$defaultRealizations = static fn (): array => [
+    [
+        'name' => 'Villa Rose',
+        'place' => 'Casa indipendente, colline fiorentine',
+        'description' => 'Un intervento pensato per dare continuita alla zona giorno, usando mobili chiari, tessuti naturali e pezzi francesi con patina vissuta.',
+        'rooms' => [
+            [
+                'id' => 'villa-rose-soggiorno',
+                'room' => 'Soggiorno',
+                'place' => 'Zona giorno',
+                'before' => '/assets/realizzazioni/soggiorno-prima.png',
+                'after' => '/assets/realizzazioni/soggiorno-dopo.png',
+                'note' => 'Un ambiente spoglio e poco definito trasformato con divano in lino, specchiera antica e mobili chiari di gusto provenzale.',
+            ],
+            [
+                'id' => 'villa-rose-pranzo',
+                'room' => 'Sala da pranzo',
+                'place' => 'Zona pranzo',
+                'before' => '/assets/realizzazioni/pranzo-prima.png',
+                'after' => '/assets/realizzazioni/pranzo-dopo.png',
+                'note' => 'La stessa casa prosegue nella sala da pranzo con tavolo antico, sedute leggere e una credenza grigio perla.',
+            ],
+        ],
+    ],
+    [
+        'name' => 'Maison Claire',
+        'place' => 'Terratetto, centro storico',
+        'description' => 'Una casa compatta, resa piu luminosa attraverso arredi proporzionati, sedute leggere e superfici in bianco e grigio perla.',
+        'rooms' => [
+            [
+                'id' => 'maison-claire-camera',
+                'room' => 'Camera ospiti',
+                'place' => 'Zona notte',
+                'before' => '/assets/realizzazioni/camera-prima.png',
+                'after' => '/assets/realizzazioni/camera-dopo.png',
+                'note' => 'La stanza ospiti viene resa piu morbida con legni chiari, tessili naturali e piccoli complementi francesi.',
+            ],
+        ],
+    ],
+    [
+        'name' => 'Casa del Cortile',
+        'place' => 'Appartamento, piano nobile',
+        'description' => 'Un progetto piu intimo, dove la camera viene ammorbidita con legni decapati, lino e piccoli dettagli decorativi.',
+        'rooms' => [
+            [
+                'id' => 'casa-del-cortile-camera',
+                'room' => 'Camera matrimoniale',
+                'place' => 'Zona notte',
+                'before' => '/assets/realizzazioni/camera-prima.png',
+                'after' => '/assets/realizzazioni/camera-dopo.png',
+                'note' => 'Una camera essenziale diventa piu morbida e raccolta con armadio decapato, tessili naturali e comodini scolpiti.',
+            ],
+            [
+                'id' => 'casa-del-cortile-soggiorno',
+                'room' => 'Piccolo soggiorno',
+                'place' => 'Zona lettura',
+                'before' => '/assets/realizzazioni/soggiorno-prima.png',
+                'after' => '/assets/realizzazioni/soggiorno-dopo.png',
+                'note' => 'Un angolo lettura viene armonizzato con specchiera, sedute chiare e oggetti scelti per legare la stanza al resto della casa.',
+            ],
+        ],
+    ],
+];
+
+$readRealizations = static function () use ($realizationsPath, $defaultRealizations): array {
+    $path = $realizationsPath();
+    if (!is_file($path)) return $defaultRealizations();
+
+    $stored = json_decode((string) file_get_contents($path), true);
+    return is_array($stored) ? $stored : $defaultRealizations();
+};
+
+$writeRealizations = static function (array $realizations) use ($realizationsPath): void {
+    $path = $realizationsPath();
+    $dir = dirname($path);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($path, json_encode(array_values($realizations), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+};
+
 $furniturePayload = static function (Request $request): array {
     $data = (array) $request->getParsedBody();
     return [
@@ -134,6 +217,10 @@ $furniturePayload = static function (Request $request): array {
         'period' => trim((string) ($data['period'] ?? '')),
     ];
 };
+
+$isValidFurniturePayload = static fn (array $data): bool => $data['name'] !== ''
+    && $data['description'] !== ''
+    && $data['category'] !== '';
 
 $isValidPassword = static function (string $password): bool {
     $length = strlen($password);
@@ -223,6 +310,10 @@ $app->get('/api/site-settings', function (Request $request, Response $response) 
     return $json($response, $readSiteSettings());
 });
 
+$app->get('/api/realizations', function (Request $request, Response $response) use ($json, $readRealizations) {
+    return $json($response, $readRealizations());
+});
+
 $app->post('/api/admin/site-settings', function (Request $request, Response $response) use ($json, $requireAdmin, $readSiteSettings, $writeSiteSettings, $storeUploadedImage) {
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
@@ -241,6 +332,75 @@ $app->post('/api/admin/site-settings', function (Request $request, Response $res
 
     $writeSiteSettings($settings);
     return $json($response, $settings);
+});
+
+$app->post('/api/admin/realizations', function (Request $request, Response $response) use ($json, $requireAdmin, $readRealizations, $writeRealizations, $storeUploadedImage) {
+    $admin = $requireAdmin($request, $response);
+    if ($admin instanceof Response) return $admin;
+
+    $data = (array) $request->getParsedBody();
+    $houseName = trim((string) ($data['houseName'] ?? ''));
+    $housePlace = trim((string) ($data['housePlace'] ?? ''));
+    $houseDescription = trim((string) ($data['houseDescription'] ?? ''));
+    $room = trim((string) ($data['room'] ?? ''));
+    $roomPlace = trim((string) ($data['roomPlace'] ?? ''));
+    $note = trim((string) ($data['note'] ?? ''));
+    $before = $storeUploadedImage($request->getUploadedFiles(), 'beforeImage');
+    $after = $storeUploadedImage($request->getUploadedFiles(), 'afterImage');
+
+    if ($houseName === '' || $housePlace === '' || $houseDescription === '' || $room === '' || $roomPlace === '' || $note === '' || !$before || !$after) {
+        return $json($response, ['error' => 'Invalid data'], 422);
+    }
+
+    $realizations = $readRealizations();
+    $roomPayload = [
+        'id' => bin2hex(random_bytes(8)),
+        'room' => $room,
+        'place' => $roomPlace,
+        'before' => $before,
+        'after' => $after,
+        'note' => $note,
+    ];
+
+    $houseFound = false;
+    foreach ($realizations as &$house) {
+        if (($house['name'] ?? '') !== $houseName) continue;
+        $house['place'] = $housePlace;
+        $house['description'] = $houseDescription;
+        $house['rooms'][] = $roomPayload;
+        $houseFound = true;
+        break;
+    }
+    unset($house);
+
+    if (!$houseFound) {
+        $realizations[] = [
+            'name' => $houseName,
+            'place' => $housePlace,
+            'description' => $houseDescription,
+            'rooms' => [$roomPayload],
+        ];
+    }
+
+    $writeRealizations($realizations);
+    return $json($response, $realizations, 201);
+});
+
+$app->delete('/api/admin/realizations/{id}', function (Request $request, Response $response, array $args) use ($json, $requireAdmin, $readRealizations, $writeRealizations) {
+    $admin = $requireAdmin($request, $response);
+    if ($admin instanceof Response) return $admin;
+
+    $roomId = (string) $args['id'];
+    $realizations = [];
+    foreach ($readRealizations() as $house) {
+        $rooms = array_values(array_filter($house['rooms'] ?? [], static fn ($room) => ($room['id'] ?? '') !== $roomId));
+        if (count($rooms) === 0) continue;
+        $house['rooms'] = $rooms;
+        $realizations[] = $house;
+    }
+
+    $writeRealizations($realizations);
+    return $json($response, $realizations);
 });
 
 $app->get('/api/admin/stats', function (Request $request, Response $response) use ($json, $requireAdmin) {
@@ -270,13 +430,13 @@ $app->get('/api/admin/furniture', function (Request $request, Response $response
     return $json($response, array_map($normalizeFurniture, $statement->fetchAll()));
 });
 
-$app->post('/api/admin/furniture', function (Request $request, Response $response) use ($json, $requireAdmin, $storeUploadedImages, $furniturePayload) {
+$app->post('/api/admin/furniture', function (Request $request, Response $response) use ($json, $requireAdmin, $storeUploadedImages, $furniturePayload, $isValidFurniturePayload) {
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
 
     $data = $furniturePayload($request);
     $images = $storeUploadedImages($request->getUploadedFiles());
-    if (in_array('', $data, true) || count($images) === 0) {
+    if (!$isValidFurniturePayload($data) || count($images) === 0) {
         return $json($response, ['error' => 'Invalid data'], 422);
     }
 
@@ -290,7 +450,7 @@ $app->post('/api/admin/furniture', function (Request $request, Response $respons
     return $json($response, ['id' => (int) $db->lastInsertId()], 201);
 });
 
-$app->post('/api/admin/furniture/{id}', function (Request $request, Response $response, array $args) use ($json, $requireAdmin, $storeUploadedImages, $furniturePayload) {
+$app->post('/api/admin/furniture/{id}', function (Request $request, Response $response, array $args) use ($json, $requireAdmin, $storeUploadedImages, $furniturePayload, $isValidFurniturePayload) {
     $admin = $requireAdmin($request, $response);
     if ($admin instanceof Response) return $admin;
 
@@ -302,7 +462,7 @@ $app->post('/api/admin/furniture/{id}', function (Request $request, Response $re
     if (!$row) return $json($response, ['error' => 'Not found'], 404);
 
     $data = $furniturePayload($request);
-    if (in_array('', $data, true)) {
+    if (!$isValidFurniturePayload($data)) {
         return $json($response, ['error' => 'Invalid data'], 422);
     }
 

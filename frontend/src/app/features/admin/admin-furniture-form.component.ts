@@ -15,12 +15,6 @@ import { FurnitureForm } from './admin.models';
       <label>Categoria
         <input name="category" [(ngModel)]="form.category" required>
       </label>
-      <label>Periodo
-        <input name="period" [(ngModel)]="form.period" required>
-      </label>
-      <label>Collocazione
-        <input name="placement" [(ngModel)]="form.placement" required>
-      </label>
       <label>Descrizione
         <textarea name="description" rows="5" [(ngModel)]="form.description" required></textarea>
       </label>

@@ -5,7 +5,7 @@ import { Furniture } from '../../core/models';
   selector: 'app-catalog-hero',
   standalone: true,
   template: `
-    <section class="hero" [class.catalog-hero]="isCatalogPage">
+    <section class="hero" [class.catalog-hero]="isCatalogPage" [class.home-hero]="!isCatalogPage">
       <div class="hero-visual" [class.custom-catalog-hero]="isCatalogPage && catalogHeroImage" [style.background-image]="visualBackground()">
         @if (isCatalogPage && !catalogHeroImage) {
           <div class="hero-product-backdrop" aria-hidden="true">

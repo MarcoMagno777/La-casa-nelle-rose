@@ -2,7 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { AdminStats } from '../../core/admin.models';
 import { ApiService } from '../../core/api.service';
-import { Furniture, SiteSettings } from '../../core/models';
+import { Furniture, RealizationHouse, SiteSettings } from '../../core/models';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -41,6 +41,10 @@ export class AdminService {
     return this.api.getSiteSettings();
   }
 
+  realizations(): Observable<RealizationHouse[]> {
+    return this.api.getRealizations();
+  }
+
   createFurniture(data: FormData): Observable<{ id: number }> {
     return this.api.createFurniture(data);
   }
@@ -55,5 +59,13 @@ export class AdminService {
 
   updateSiteSettings(data: FormData): Observable<SiteSettings> {
     return this.api.updateSiteSettings(data);
+  }
+
+  createRealization(data: FormData): Observable<RealizationHouse[]> {
+    return this.api.createRealization(data);
+  }
+
+  deleteRealization(roomId: string): Observable<RealizationHouse[]> {
+    return this.api.deleteRealization(roomId);
   }
 }

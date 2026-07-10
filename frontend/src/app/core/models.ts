@@ -20,6 +20,22 @@ export interface SiteSettings {
   catalogHeroImage: string;
 }
 
+export interface RealizationRoom {
+  id: string;
+  room: string;
+  place: string;
+  before: string;
+  after: string;
+  note: string;
+}
+
+export interface RealizationHouse {
+  name: string;
+  place: string;
+  description: string;
+  rooms: RealizationRoom[];
+}
+
 export interface AuthResponse {
   token: string;
   user: User;

@@ -1,6 +1,10 @@
 .git
 .kamal
+.env
+.env.*
 backend/vendor
 frontend/node_modules
 frontend/dist
+frontend/.angular
+backend/public/uploads
 **/.DS_Store
